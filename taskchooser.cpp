@@ -1,5 +1,6 @@
 #include "taskchooser.h"
 #include "ui_taskchooser.h"
+#include "task.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -44,9 +45,21 @@ void TaskChooser::on_refreshButton_clicked()
 
 void TaskChooser::on_OKbutton_clicked()
 {
-    auto item = ui->listOfTasks->currentItem();
     tasksOrCriticalAndReturn();
-    qDebug() << item->text();
+    auto item = ui->listOfTasks->currentItem();
+    // TODO: create based on chosen
+    Task selectedTask(this);
+    // TODO: move data - probably chose some other ID than name
+    selectedTask.setTask(item->text());
+
+    hide();
+    try {
+        selectedTask.exec();
+    } catch (...) {
+        qDebug() << "exe";
+    }
+
+    show();
 }
 
 void TaskChooser::tasksOrCriticalAndReturn() {

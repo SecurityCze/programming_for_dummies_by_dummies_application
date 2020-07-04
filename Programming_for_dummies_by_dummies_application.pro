@@ -18,14 +18,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainmenu.cpp \
+    task.cpp \
     taskchooser.cpp
 
 HEADERS += \
     mainmenu.h \
+    task.h \
     taskchooser.h
 
 FORMS += \
     mainmenu.ui \
+    task.ui \
     taskchooser.ui
 
 TRANSLATIONS += \
