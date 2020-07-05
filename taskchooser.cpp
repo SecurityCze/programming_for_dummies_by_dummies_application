@@ -52,17 +52,16 @@ void TaskChooser::on_OKbutton_clicked()
     tasksOrCriticalAndReturn();
     auto item = ui->listOfTasks->currentItem();
 
-    m_tasks.push_back(new Task(this));
+    m_tasks.push_back(new Task(item->text(), this));
     Task* selectedTask = m_tasks.back();
     // TODO: move data - probably chose some other ID than name
-    selectedTask->setTask(item->text());
     selectedTask->show();
     selectedTask->exec();
 }
 
 void TaskChooser::tasksOrCriticalAndReturn() {
     if (ui->listOfTasks->count() == 0) {
-        QMessageBox::critical(this, "No tasks", "Sorry, no tasks are currently available.\nPlease come back later.");
+        QMessageBox::critical(this, tr("No tasks"), tr("Sorry, no tasks are currently available.\nPlease come back later."));
         done(s_NO_TASKS);
     }
 }
