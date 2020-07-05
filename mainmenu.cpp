@@ -28,7 +28,7 @@ void MainMenu::on_actionAbout_triggered()
 
 void MainMenu::on_tasksButton_clicked()
 {
-    TaskChooser tasks(this);
+    TaskChooser tasks(nullptr);
     hide();
     tasks.exec();
     show();

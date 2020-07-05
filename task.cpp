@@ -17,6 +17,7 @@ Task::~Task()
 void Task::setTask(const QString& taskId) {
     // TODO: read task and set boxes
     ui->taskName->setText(taskId);
+    setWindowTitle(taskId);
 }
 
 void Task::on_returnButton_clicked()

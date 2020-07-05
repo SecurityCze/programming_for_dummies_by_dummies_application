@@ -16,6 +16,10 @@ TaskChooser::TaskChooser(QWidget *parent) :
 
 TaskChooser::~TaskChooser()
 {
+    for (Task *currentTask : m_tasks) {
+        delete currentTask;
+    }
+
     delete ui;
 }
 
@@ -47,19 +51,13 @@ void TaskChooser::on_OKbutton_clicked()
 {
     tasksOrCriticalAndReturn();
     auto item = ui->listOfTasks->currentItem();
-    // TODO: create based on chosen
-    Task selectedTask(this);
+
+    m_tasks.push_back(new Task(this));
+    Task* selectedTask = m_tasks.back();
     // TODO: move data - probably chose some other ID than name
-    selectedTask.setTask(item->text());
-
-    hide();
-    try {
-        selectedTask.exec();
-    } catch (...) {
-        qDebug() << "exe";
-    }
-
-    show();
+    selectedTask->setTask(item->text());
+    selectedTask->show();
+    selectedTask->exec();
 }
 
 void TaskChooser::tasksOrCriticalAndReturn() {

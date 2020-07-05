@@ -1,7 +1,10 @@
 #ifndef TASKCHOOSER_H
 #define TASKCHOOSER_H
 
+#include "task.h"
+
 #include <QDialog>
+#include <vector>
 
 namespace Ui {
 class TaskChooser;
@@ -31,6 +34,8 @@ private:
     Ui::TaskChooser *ui;
     static constexpr const int s_OK = 0;
     static constexpr const int s_NO_TASKS = 1;
+
+    std::vector<Task *> m_tasks;
 };
 
 #endif // TASKCHOOSER_H
