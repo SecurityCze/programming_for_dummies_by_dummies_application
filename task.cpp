@@ -15,6 +15,8 @@ Task::Task(const QString& taskID, const CTaskStorage& taskStorage, QWidget *pare
     ui->setupUi(this);
     ui->groupboxMarks->hide();
     ui->progressBarSolution->hide();
+    ui->documentationEdit->hide();
+    ui->runtimeExamplesEdit->hide();
 
     // TODO: decode taskID and load appropriate fields
     QString taskTextName = m_taskStorage.getTaskName(m_taskID);
@@ -71,12 +73,18 @@ void Task::showResult(int mark, const QString& errors) {
         ui->percentageMark->setStyleSheet("QLCDNumber { color: green }");
 }
 
+void Task::on_documentationBox_stateChanged(int arg1)
+{
+    if (arg1 == Qt::Checked)
+        ui->documentationEdit->show();
+    else
+        ui->documentationEdit->hide();
+}
 
-
-
-
-
-
-
-
-
+void Task::on_runtimeExamplesBox_stateChanged(int arg1)
+{
+    if (arg1 == Qt::Checked)
+        ui->runtimeExamplesEdit->show();
+    else
+        ui->runtimeExamplesEdit->hide();
+}

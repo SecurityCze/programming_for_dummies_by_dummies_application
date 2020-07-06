@@ -26,6 +26,10 @@ private slots:
 
     void showResult(int mark, const QString& errors = "");
 
+    void on_documentationBox_stateChanged(int arg1);
+
+    void on_runtimeExamplesBox_stateChanged(int arg1);
+
 private:
     Ui::Task *ui;
     static constexpr const int s_OK = 0;
