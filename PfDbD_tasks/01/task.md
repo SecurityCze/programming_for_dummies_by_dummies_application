@@ -25,25 +25,6 @@ Je možné dát za každého zabitého nepřítele nejvýše 4 asistence (progra
 Právě tyto a výše zmíněné problémy musí program detekovat a v případě
 problému musí vypsat `Nespravny vstup` a ukončit se.
 
-Ukázka vstupu v 1. až 4. kole:
-```
-2 3 1 1
-0 0 1 0
-2 0 0 0
-1 0 0 0
-0 0 0 0
-```
-
-Ukázka vstupu v 5. kole:
-```
-1 1 1 0
-1 1 1 0
-3 2 0 1
-0 0 0 0
-0 0 1 0
-w
-```
-
 Program na začátku musí vypsat hlášku pro uživatele: `Zadej herni vstupy:`.
 
 Finální logika rank-upu či rank-downu spočívá v magické formuli:

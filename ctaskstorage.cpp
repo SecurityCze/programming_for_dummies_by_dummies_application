@@ -15,12 +15,19 @@ void CTaskStorage::reloadTasks() {
 }
 
 QString CTaskStorage::getTaskName(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "\\name.txt");
+    return readFromUTF8File(s_ROOT + taskID + "\\" + s_TASK_NAME_FILENAME);
 }
 
-
 QString CTaskStorage::getTaskDescription(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "\\README.md");
+    return readFromUTF8File(s_ROOT + taskID + "\\" + s_TASK_DESCIPTION_FILENAME);
+}
+
+QString CTaskStorage::getTaskRuntimeExamples(const QString& taskID) const {
+    return readFromUTF8File(s_ROOT + taskID + "\\" + s_RUNTIME_EXAMPLES_FILENAME);
+}
+
+QString CTaskStorage::getTaskRecomendedDocumentation(const QString& taskID) const {
+    return readFromUTF8File(s_ROOT + taskID + "\\" + s_RECOMENDED_DOCUMENTATION_FILENAME);
 }
 
 std::list<SIDName> CTaskStorage::getTasks() const {
