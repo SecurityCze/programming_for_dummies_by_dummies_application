@@ -1,5 +1,6 @@
 #include "task.h"
 #include "ui_task.h"
+#include "ccompiler.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -49,6 +50,12 @@ void Task::on_fileButton_clicked()
 
 void Task::on_markButton_clicked()
 {
+    // TMP - compiler develop - START
+    CCompiler comp;
+    qDebug() << "HEHEHEHEHHEHEHEHEHHE " << comp.IsAvailable();
+    qDebug() << " HEHEHEH END";
+    // TMP - compiler develop - END
+
     // TODO: marking process -> move to another thread to not freze rest of application
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
