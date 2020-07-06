@@ -7,22 +7,85 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>400</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: #E1E7F2;
+}
+
+QLabel {
+	color: #000;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+QCheckBox[objectName=&quot;documentationBox&quot;] {
+	font-weight: bold;
+}
+
+QPushButton {
+	padding: 10px;
+	color: white;
+	font-weight: bold;
+	border: none;
+}
+
+/* default button style */
+QPushButton {
+	background-color: black;
+}
+
+QPushButton:hover {
+	background-color: grey;
+}
+
+/* OKbutton button style */
+QPushButton[objectName=&quot;OKbutton&quot;] {
+	background-color: #85B404;
+}
+
+QPushButton[objectName=&quot;OKbutton&quot;]:hover {
+	background-color: #A2DC04;
+}
+
+/* refresh button style */
+QPushButton[objectName=&quot;markButton&quot;], QPushButton[objectName=&quot;fileButton&quot;] {
+	background-color: #197BBD;
+}
+
+QPushButton[objectName=&quot;markButton&quot;]:hover {
+	background-color: #6A7FDB;
+}
+
+QPushButton[objectName=&quot;fileButton&quot;]:hover {
+	background-color: #6A7FDB;
+}
+
+/* &quot;deny&quot; button style */
+QPushButton[objectName=&quot;returnButton&quot;] {
+	background-color: #E0001E;
+}
+
+QPushButton[objectName=&quot;returnButton&quot;]:hover {
+	background-color: #FF0022;
+}
+
+QGroupBox[objectName=&quot;groupboxMarks&quot;] {
+	border: none;
+}</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0" colspan="3">
     <layout class="QVBoxLayout" name="taskLayout">
-     <item>
-      <widget class="QLineEdit" name="taskName">
-       <property name="toolTip">
-        <string>Name of task</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+     <item alignment="Qt::AlignHCenter">
+      <widget class="QLabel" name="taskName">
+       <property name="text">
+        <string>TextLabel</string>
        </property>
       </widget>
      </item>
@@ -38,14 +101,14 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="3">
-    <widget class="Line" name="lineTaskUpload">
+   <item row="7" column="0" colspan="3">
+    <widget class="Line" name="lineUploadScore">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="9" column="0" colspan="3">
+   <item row="12" column="0" colspan="3">
     <widget class="QProgressBar" name="progressBarSolution">
      <property name="enabled">
       <bool>true</bool>
@@ -63,19 +126,6 @@
    </item>
    <item row="4" column="0" colspan="3">
     <layout class="QGridLayout" name="uploadLayout">
-     <item row="0" column="0" colspan="2">
-      <widget class="QLineEdit" name="fileName">
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Chosen file for validationg</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="2">
       <widget class="QPushButton" name="markButton">
        <property name="enabled">
@@ -102,13 +152,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="fileButton">
-       <property name="text">
-        <string>Choose file</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0">
       <widget class="QPushButton" name="returnButton">
        <property name="text">
@@ -116,18 +159,49 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="fileButton">
+       <property name="text">
+        <string>Choose file</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" rowspan="2" colspan="2">
+      <widget class="QLineEdit" name="fileName">
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Chosen file for validationg</string>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="7" column="0" colspan="3">
-    <widget class="Line" name="lineUploadScore">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
+   <item row="13" column="0">
     <widget class="QGroupBox" name="groupboxMarks">
      <layout class="QGridLayout" name="markLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>0</number>
+      </property>
       <item row="2" column="0">
        <widget class="QTextEdit" name="errors">
         <property name="toolTip">
@@ -145,7 +219,9 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>22</pointsize>
+          <pointsize>-1</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="frameShape">
@@ -194,6 +270,27 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <layout class="QVBoxLayout" name="documentationLayout">
+     <item>
+      <widget class="QCheckBox" name="documentationBox">
+       <property name="text">
+        <string>Doporučená dokumentace</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="documentationEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="Line" name="lineTaskUpload">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
   </layout>
