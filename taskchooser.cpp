@@ -4,6 +4,9 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QDir>
+
+#include <list>
 
 TaskChooser::TaskChooser(QWidget *parent) :
     QDialog(parent),
@@ -30,13 +33,18 @@ void TaskChooser::on_returnButton_clicked()
 
 int TaskChooser::loadTasks()
 {
-    // TODO: load them from Github? probably cache them?
     ui->listOfTasks->clear();
-    for (char i = '0'; i <= '9'; ++i) {
-        ui->listOfTasks->addItem(QString(i));
-    }
-    ui->listOfTasks->update();
 
+    m_taskStorage.reloadTasks();
+    std::list<SIDName> tasks = m_taskStorage.getTasks();
+    for (const SIDName &task : tasks) {
+        QListWidgetItem *newItem = new QListWidgetItem();
+        newItem->setText(task.m_name);
+        newItem->setData(Qt::UserRole, task.m_ID);
+        ui->listOfTasks->addItem(newItem);
+    }
+
+    ui->listOfTasks->update();
     tasksOrCriticalAndReturn();
     ui->listOfTasks->setCurrentRow(0);
     return ui->listOfTasks->count();
@@ -51,10 +59,10 @@ void TaskChooser::on_OKbutton_clicked()
 {
     tasksOrCriticalAndReturn();
     auto item = ui->listOfTasks->currentItem();
+    QString taskID = item->data(Qt::UserRole).toString();
 
-    m_tasks.push_back(new Task(item->text(), this));
+    m_tasks.push_back(new Task(taskID, m_taskStorage, this));
     Task* selectedTask = m_tasks.back();
-    // TODO: move data - probably chose some other ID than name
     selectedTask->show();
     selectedTask->exec();
 }

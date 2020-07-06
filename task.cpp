@@ -6,18 +6,21 @@
 #include <QTimeLine>
 #include <QThread>
 
-Task::Task(const QString& taskID, QWidget *parent) :
+Task::Task(const QString& taskID, const CTaskStorage& taskStorage, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Task),
-    m_taskID(std::move(taskID))
+    m_taskID(std::move(taskID)),
+    m_taskStorage(taskStorage)
 {
     ui->setupUi(this);
     ui->groupboxMarks->hide();
     ui->progressBarSolution->hide();
 
     // TODO: decode taskID and load appropriate fields
-    ui->taskName->setText(m_taskID);
-    setWindowTitle(m_taskID);
+    QString taskTextName = m_taskStorage.getTaskName(m_taskID);
+    ui->taskName->setText(taskTextName);
+    setWindowTitle(tr("PfDbD") + " - " + taskTextName);
+    ui->taskText->setMarkdown(m_taskStorage.getTaskDescription(m_taskID));
 }
 
 Task::~Task()
@@ -32,7 +35,7 @@ void Task::on_returnButton_clicked()
 
 void Task::on_fileButton_clicked()
 {
-    QString newFileName = QFileDialog::getOpenFileName(this, tr("Please chose file for marking"), tr(""), tr("C/C++ files(*.c, *.cpp);;All files(*)"));
+    QString newFileName = QFileDialog::getOpenFileName(this, tr("Please chose file for marking"), "", tr("C/C++ files (*.c, *.cpp);;All files (*)"));
     if (newFileName.isEmpty())
         return;
     m_fileName = newFileName;
@@ -42,10 +45,11 @@ void Task::on_fileButton_clicked()
 
 void Task::on_markButton_clicked()
 {
-    // TODO: marking process
+    // TODO: marking process -> move to another thread to not freze rest of application
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
 
+    // Just a DUMMY -> to show how it could look when marking
     for(int i = 0; i <= 100; ++i) {
         QThread::msleep(50);
         ui->progressBarSolution->setValue(i);
@@ -66,3 +70,13 @@ void Task::showResult(int mark, const QString& errors) {
     else
         ui->percentageMark->setStyleSheet("QLCDNumber { color: green }");
 }
+
+
+
+
+
+
+
+
+
+

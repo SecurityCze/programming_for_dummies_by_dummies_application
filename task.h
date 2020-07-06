@@ -1,6 +1,8 @@
 #ifndef TASK_H
 #define TASK_H
 
+#include "ctaskstorage.h"
+
 #include <QDialog>
 
 namespace Ui {
@@ -12,7 +14,7 @@ class Task : public QDialog
     Q_OBJECT
 
 public:
-    explicit Task(const QString &taskID, QWidget *parent = nullptr);
+    explicit Task(const QString &taskID, const CTaskStorage& taskStorage, QWidget *parent = nullptr);
     ~Task();
 
 private slots:
@@ -27,8 +29,9 @@ private slots:
 private:
     Ui::Task *ui;
     static constexpr const int s_OK = 0;
-    QString m_taskID = "";
+    QString m_taskID;
     QString m_fileName = "";
+    const CTaskStorage& m_taskStorage;
 };
 
 #endif // TASK_H

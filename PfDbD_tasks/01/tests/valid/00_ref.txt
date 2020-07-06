@@ -1,0 +1,6 @@
+Zadej herni vstupy:
+Hrac #1: -1.00
+Hrac #2: rank-up
+Hrac #3: 1.00
+Hrac #4: rank-up
+Hrac #5: rank-up

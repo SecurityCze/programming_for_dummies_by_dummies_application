@@ -1,6 +1,7 @@
 #ifndef TASKCHOOSER_H
 #define TASKCHOOSER_H
 
+#include "ctaskstorage.h"
 #include "task.h"
 
 #include <QDialog>
@@ -36,6 +37,8 @@ private:
     static constexpr const int s_NO_TASKS = 1;
 
     std::vector<Task *> m_tasks;
+
+    CTaskStorage m_taskStorage {};
 };
 
 #endif // TASKCHOOSER_H
