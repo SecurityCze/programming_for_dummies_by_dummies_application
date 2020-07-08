@@ -1,0 +1,12 @@
+
+#Simple git ignore
+
+# CLion
+.idea/
+
+# CMake
+cmake-build-*/
+
+# Qt
+*.pro.user
+*.pro.user.*
