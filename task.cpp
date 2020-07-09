@@ -1,5 +1,6 @@
 #include "task.h"
 #include "ui_task.h"
+#include "ccompiler.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -39,7 +40,7 @@ void Task::on_returnButton_clicked()
 
 void Task::on_fileButton_clicked()
 {
-    QString newFileName = QFileDialog::getOpenFileName(this, tr("Please chose file for marking"), "", tr("C/C++ files (*.c, *.cpp);;All files (*)"));
+    QString newFileName = QFileDialog::getOpenFileName(this, tr("Please chose file for marking"), "", tr("C/C++ files (*.c *.cpp);;All files (*)"));
     if (newFileName.isEmpty())
         return;
     m_fileName = newFileName;
@@ -53,11 +54,16 @@ void Task::on_markButton_clicked()
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
 
+    // TMP - compiler develop - START
+    qDebug() << "Compiler present? (0-OK): " << CCompiler::IsAvailable();
+    qDebug() << "Compilation status: (20-OK, 21-Warnings, 22-FAIL)" << CCompiler::Compile(m_fileName, {CCompiler::COMP_PARAMS::PEDANTIC, CCompiler::COMP_PARAMS::WALL});
+    // TMP - compiler develop - END
+
     // Just a DUMMY -> to show how it could look when marking
-    for(int i = 0; i <= 100; ++i) {
-        QThread::msleep(50);
-        ui->progressBarSolution->setValue(i);
-    }
+//    for(int i = 0; i <= 100; ++i) {
+//        QThread::msleep(50);
+//        ui->progressBarSolution->setValue(i);
+//    }
 
     int mark = 110;
     showResult(mark, "Errors will be here:");
