@@ -17,7 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ccompiler.cpp \
+    ctaskabstract.cpp \
+    ctasknolimit.cpp \
+    ctaskstate.cpp \
     ctaskstorage.cpp \
+    ctasktimelimited.cpp \
     main.cpp \
     mainmenu.cpp \
     task.cpp \
@@ -25,7 +29,11 @@ SOURCES += \
 
 HEADERS += \
     ccompiler.h \
+    ctaskabstract.h \
+    ctasknolimit.h \
+    ctaskstate.h \
     ctaskstorage.h \
+    ctasktimelimited.h \
     mainmenu.h \
     task.h \
     taskchooser.h
