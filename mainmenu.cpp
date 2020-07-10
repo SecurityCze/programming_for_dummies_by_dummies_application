@@ -7,6 +7,7 @@
 MainMenu::MainMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainMenu)
+    , m_taskChooser(new TaskChooser)
 {
     ui->setupUi(this);
 }
@@ -28,9 +29,9 @@ void MainMenu::on_actionAbout_triggered()
 
 void MainMenu::on_tasksButton_clicked()
 {
-    TaskChooser tasks(nullptr);
     hide();
-    tasks.exec();
+    m_taskChooser->move(pos());
+    m_taskChooser->exec();
     show();
 }
 

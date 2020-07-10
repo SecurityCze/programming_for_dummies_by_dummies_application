@@ -237,7 +237,7 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
      <item>
       <widget class="QCheckBox" name="documentationBox">
        <property name="text">
-        <string>Recommended recommendation</string>
+        <string>Recommended documentation</string>
        </property>
       </widget>
      </item>

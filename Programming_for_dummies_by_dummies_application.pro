@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -43,3 +43,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+# lib2git static library
+# https://github.com/libgit2/libgit2
+unix:!macx|win32: LIBS += -L$$PWD/external/ -lgit2
+
+INCLUDEPATH += $$PWD/external
+DEPENDPATH += $$PWD/external
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/external/git2.lib
+#else:unix:!macx|win32-g++: PRE_TARGETDEPS += $$PWD/external/libgit2.a

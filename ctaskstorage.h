@@ -2,6 +2,8 @@
 #define CTASKSTORAGE_H
 
 #include <QString>
+#include <QObject>
+
 #include <list>
 
 struct SIDName {
@@ -9,12 +11,16 @@ struct SIDName {
     QString m_name;
 };
 
-class CTaskStorage
-{
+class CTaskStorage : public QObject {
+
+    Q_OBJECT
+
 public:
     CTaskStorage();
     CTaskStorage(const CTaskStorage&) = delete;
     CTaskStorage operator=(const CTaskStorage&) = delete;
+
+    virtual ~CTaskStorage() = default;
 
     void reloadTasks();
 
@@ -34,7 +40,9 @@ private:
     /**
      * @brief s_ROOT path to root storage of tasks
      */
-    static constexpr const char *const s_ROOT = "..\\Programming_for_dummies_by_dummies_application\\PfDbD_tasks\\";
+    static constexpr const char *const s_ROOT = "../Programming_for_dummies_by_dummies_tasks/";
+    //static constexpr const char *const s_ROOT = "C:/Users/Matej/Documents/00_CVUT/PS2/";
+    static constexpr const char *const s_GIT_REMOTE_NAME = "origin";
 
     static constexpr const char *const s_TASK_NAME_FILENAME = "name.txt";
     static constexpr const char *const s_TASK_DESCIPTION_FILENAME = "task.md";

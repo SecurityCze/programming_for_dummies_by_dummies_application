@@ -1,6 +1,8 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
+#include "taskchooser.h"
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -26,5 +28,6 @@ private slots:
 
 private:
     Ui::MainMenu *ui;
+    TaskChooser* m_taskChooser;
 };
 #endif // MAINMENU_H
