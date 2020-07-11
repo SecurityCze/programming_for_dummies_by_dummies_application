@@ -6,6 +6,8 @@
 
 #include <list>
 
+#include "git2.h"
+
 struct SIDName {
     QString m_ID;
     QString m_name;
@@ -22,7 +24,7 @@ public:
 
     virtual ~CTaskStorage() = default;
 
-    void reloadTasks();
+    void reloadTasksFromRemote();
 
     QString getTaskName(const QString& taskID) const;
 
@@ -37,11 +39,19 @@ public:
 private:
     static QString readFromUTF8File(const QString &path);
 
+    void libgit2ErrorDebug(int errorCode, const char* const message, const char* const moreInfo);
+
+    void libgit2cleanUp(git_repository *repository, git_remote *remote, git_object *object);
+
     /**
      * @brief s_ROOT path to root storage of tasks
      */
     static constexpr const char *const s_ROOT = "../Programming_for_dummies_by_dummies_tasks/";
-    //static constexpr const char *const s_ROOT = "C:/Users/Matej/Documents/00_CVUT/PS2/";
+
+    /**
+     * @brief s_REMOTE_URL url to remote repository
+     */
+    static constexpr const char *const s_REMOTE_URL = "https://github.com/SecurityCze/programming_for_dummies_by_dummies.git";
     static constexpr const char *const s_GIT_REMOTE_NAME = "origin";
 
     static constexpr const char *const s_TASK_NAME_FILENAME = "name.txt";

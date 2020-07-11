@@ -30,6 +30,7 @@ void MainMenu::on_actionAbout_triggered()
 void MainMenu::on_tasksButton_clicked()
 {
     hide();
+    m_taskChooser->loadTasks();
     m_taskChooser->move(pos());
     m_taskChooser->exec();
     show();
