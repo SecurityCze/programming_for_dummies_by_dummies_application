@@ -13,6 +13,60 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: #E1E7F2;
+}
+
+QPushButton {
+	padding: 10px;
+	color: white;
+	font-weight: bold;
+	border: none;
+}
+
+/* default button style */
+QPushButton {
+	background-color: black;
+}
+
+QPushButton:hover {
+	background-color: grey;
+}
+
+/* OKbutton button style */
+QPushButton[objectName=&quot;OKbutton&quot;], QPushButton[objectName=&quot;applyAllButton&quot;], QPushButton[objectName=&quot;taskStorageApplyButton&quot;] {
+	background-color: #85B404;
+}
+
+QPushButton[objectName=&quot;OKbutton&quot;]:hover, QPushButton[objectName=&quot;applyAllButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:hover {
+	background-color: #A2DC04;
+}
+
+/* refresh button style */
+QPushButton[objectName=&quot;refreshButton&quot;], QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;],
+QPushButton[objectName=&quot;resetDefaultButton&quot;] {
+	background-color: #197BBD;
+}
+
+QPushButton[objectName=&quot;refreshButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;]:hover,
+QPushButton[objectName=&quot;resetDefaultButton&quot;]:hover {
+	background-color: #6A7FDB;
+}
+
+/* &quot;deny&quot; button style */
+QPushButton[objectName=&quot;returnButton&quot;] {
+	background-color: #E0001E;
+}
+
+QPushButton[objectName=&quot;returnButton&quot;]:hover {
+	background-color: #FF0022;
+}
+
+QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:disabled {
+    background-color: #87898D;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="taskStorageLayout">

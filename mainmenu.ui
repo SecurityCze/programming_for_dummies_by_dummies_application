@@ -60,6 +60,15 @@ QPushButton[objectName=&quot;exitButton&quot;] {
 
 QPushButton[objectName=&quot;exitButton&quot;]:hover {
 	background-color: #FF0022;
+}
+
+/* settings color */
+QPushButton[objectName=&quot;settingsButton&quot;] {
+	background-color: #D125FF;
+}
+
+QPushButton[objectName=&quot;settingsButton&quot;]:hover {
+	background-color: #F1BDFF;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">

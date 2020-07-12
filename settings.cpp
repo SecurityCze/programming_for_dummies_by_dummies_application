@@ -14,6 +14,7 @@ Settings::Settings(QWidget *parent) :
     ui(new Ui::Settings)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Settings"));
     ui->taskStorageChosenLocation->setText(CSettingsStorage::getTasksStoragePath());
     ui->taskStorageApplyButton->setEnabled(false);
 
