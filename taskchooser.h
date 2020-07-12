@@ -17,7 +17,10 @@ class TaskChooser : public QDialog
 
 public:
     explicit TaskChooser(QWidget *parent = nullptr);
+
     ~TaskChooser();
+
+    int loadTasks();
 
 private slots:
     void on_returnButton_clicked();
@@ -27,8 +30,6 @@ private slots:
     void on_OKbutton_clicked();
 
 private:
-    int loadTasks();
-
     void tasksOrCriticalAndReturn();
 
 private:

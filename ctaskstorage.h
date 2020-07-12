@@ -2,21 +2,29 @@
 #define CTASKSTORAGE_H
 
 #include <QString>
+#include <QObject>
+
 #include <list>
+
+#include "git2.h"
 
 struct SIDName {
     QString m_ID;
     QString m_name;
 };
 
-class CTaskStorage
-{
+class CTaskStorage : public QObject {
+
+    Q_OBJECT
+
 public:
     CTaskStorage();
     CTaskStorage(const CTaskStorage&) = delete;
     CTaskStorage operator=(const CTaskStorage&) = delete;
 
-    void reloadTasks();
+    virtual ~CTaskStorage() = default;
+
+    void reloadTasksFromRemote();
 
     QString getTaskName(const QString& taskID) const;
 
@@ -31,10 +39,20 @@ public:
 private:
     static QString readFromUTF8File(const QString &path);
 
+    void libgit2ErrorDebug(int errorCode, const char* const message, const char* const moreInfo);
+
+    void libgit2cleanUp(git_repository *repository, git_remote *remote, git_object *object);
+
     /**
      * @brief s_ROOT path to root storage of tasks
      */
-    static constexpr const char *const s_ROOT = "..\\Programming_for_dummies_by_dummies_application\\PfDbD_tasks\\";
+    QString m_taskPath;
+
+    /**
+     * @brief s_REMOTE_URL url to remote repository
+     */
+    static constexpr const char *const s_REMOTE_URL = "https://github.com/SecurityCze/programming_for_dummies_by_dummies.git";
+    static constexpr const char *const s_GIT_REMOTE_NAME = "origin";
 
     static constexpr const char *const s_TASK_NAME_FILENAME = "name.txt";
     static constexpr const char *const s_TASK_DESCIPTION_FILENAME = "task.md";

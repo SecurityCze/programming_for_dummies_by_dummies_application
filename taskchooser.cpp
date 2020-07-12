@@ -35,7 +35,6 @@ int TaskChooser::loadTasks()
 {
     ui->listOfTasks->clear();
 
-    m_taskStorage.reloadTasks();
     std::list<SIDName> tasks = m_taskStorage.getTasks();
     for (const SIDName &task : tasks) {
         QListWidgetItem *newItem = new QListWidgetItem();
@@ -52,6 +51,7 @@ int TaskChooser::loadTasks()
 
 void TaskChooser::on_refreshButton_clicked()
 {
+    m_taskStorage.reloadTasksFromRemote();
     loadTasks();
 }
 
