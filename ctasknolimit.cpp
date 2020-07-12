@@ -13,38 +13,58 @@ CTaskNoLimit::CTaskNoLimit( const QString & inputPath , const QString & referenc
 
 CTaskState::TASK_STATE CTaskNoLimit::Process()
 {
-    QString errorPath = "error_log.txt";
-    // TODO: add memory support
+    CTaskState::TASK_STATE returnState;
+    CMemdebugger::deb_struct memResult{ -1 , -1 , false };
+    RemoveGarbage();
+
 #if defined _WIN32 || defined _WIN64
     QFile m_program("a.exe");
     if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
-    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C a.exe < " + m_inFile + " > " + m_resFile + " 2> " + errorPath ).toStdString().c_str() , 0 , SW_HIDE );
+    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C a.exe < " + m_inFile + " > " + m_resFile + " 2> " + m_errorFile ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__
     QFile m_program("a.out");
     if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
-    system("./a.out < " + m_inFile + " > " + m_resFile + " 2> " + errorPath );
+    // system("./a.out < " + m_inFile + " > " + m_resFile + " 2> " + errorPath ); // shouldnt uncomment, just for future I dont know what the fuck I fucked up moment to realise to how to that
+    memResult = CMemdebugger::Process( "a.out " , m_errorFile );
 #endif
+    m_taskState.SetEndTime();
 
-    QFile errorFile( errorPath );
-    if( errorFile.exists() && errorPath.size() > 0 )
+    if( IsSegfault() ) returnState = CTaskState::TASK_STATE::FAILED;
+
+    if( Compare() ) returnState = CTaskState::TASK_STATE::SUCCESSFUL;
+    else            returnState = CTaskState::TASK_STATE::FAILED;
+
+    if(    IsValidMemResult( memResult ) && memResult.m_leakedMem
+        && returnState == CTaskState::TASK_STATE::SUCCESSFUL )
+            returnState = CTaskState::TASK_STATE::PART_FAIL;
+
+    if( IsValidMemResult( memResult ) ) m_taskState.MemoryUsed( memResult.m_usedMem );
+
+    m_taskState.SetTaskState( returnState );
+    return m_taskState.GetTaskState();
+}
+
+bool CTaskNoLimit::IsSegfault()
+{
+    QFile errorFile( m_errorFile );
+    if( errorFile.exists() && errorFile.size() > 0 )
     {
         m_taskState.SetSegfault( true );
         errorFile.open( QIODevice::ReadOnly | QIODevice::Text );
         m_taskState.SetMessage( errorFile.readAll() );
         errorFile.close();
-        return CTaskState::TASK_STATE::FAILED;
+        return true;
     }
+    return false;
+}
 
-    if( Compare() )
-    {
-        QFile( errorPath ).remove();
-        QFile( m_resFile ).remove();
-        return CTaskState::TASK_STATE::SUCCESSFUL;
-    }
-    else
-    {
-        QFile( errorPath ).remove();
-        QFile( m_resFile ).remove();
-        return CTaskState::TASK_STATE::FAILED;
-    }
+bool CTaskNoLimit::IsValidMemResult( const CMemdebugger::deb_struct & memResult ) const
+{
+    return ! ( memResult.m_usedMem < 0 || memResult.m_errorCnt < 0 );
+}
+
+void CTaskNoLimit::RemoveGarbage()
+{
+    QFile( m_errorFile ).remove();
+    QFile( m_resFile ).remove();
 }

@@ -16,7 +16,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ccodeparser.cpp \
     ccompiler.cpp \
+    cmemdebugger.cpp \
     ctaskabstract.cpp \
     ctasknolimit.cpp \
     ctaskstate.cpp \
@@ -28,7 +30,9 @@ SOURCES += \
     taskchooser.cpp
 
 HEADERS += \
+    ccodeparser.h \
     ccompiler.h \
+    cmemdebugger.h \
     ctaskabstract.h \
     ctasknolimit.h \
     ctaskstate.h \

@@ -15,7 +15,7 @@
 class CTaskAbstract
 {
 public:
-    CTaskAbstract();
+    CTaskAbstract() = default;
     virtual CTaskState::TASK_STATE Process();
     /**
      * @brief returns state of current task, basically class with stats
@@ -42,7 +42,7 @@ protected:
      */
     bool Compare() const;
 
-    QString m_inFile = "", m_refFile = "", m_resFile = "";
+    QString m_inFile = "", m_refFile = "", m_resFile = "", m_errorFile = "error_log.txt";
     uint32_t m_memLimit = 0;
     CTaskState m_taskState;
 };

@@ -20,6 +20,11 @@ bool CTaskState::IsSegFault() const
     return m_segfault;
 }
 
+bool CTaskState::MemoryLeak() const
+{
+    return m_memoryLeaked;
+}
+
 uint32_t CTaskState::TimeTaken() const
 {
     return m_startTime.msecsTo( m_endTime );
@@ -43,6 +48,11 @@ void CTaskState::SetTaskState( TASK_STATE state )
 void CTaskState::SetSegfault( bool segfault )
 {
     m_segfault = segfault;
+}
+
+void CTaskState::SetMemoryLeak( bool leaked )
+{
+    m_memoryLeaked = leaked;
 }
 
 void CTaskState::SetMessage( const QString & message )
