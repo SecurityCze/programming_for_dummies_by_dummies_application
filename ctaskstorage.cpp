@@ -1,14 +1,17 @@
 #include "ctaskstorage.h"
+#include "csettingsstorage.h"
 
 #include <QFile>
 #include <QDir>
 #include <QDebug>
 #include <QTextStream>
 #include <QObject>
+#include <QSettings>
+#include <QCoreApplication>
 
 #include "git2.h"
 
-CTaskStorage::CTaskStorage()
+CTaskStorage::CTaskStorage(): m_taskPath(CSettingsStorage::getTasksStoragePath())
 {
     reloadTasksFromRemote();
 }
@@ -19,12 +22,12 @@ void CTaskStorage::reloadTasksFromRemote() {
     git_remote* remote = nullptr;
     git_object *headObject = nullptr;
 
-    int gitReturnVal = git_repository_open(&repository, s_ROOT);
+    int gitReturnVal = git_repository_open(&repository, m_taskPath.toStdString().c_str());
 
     if (gitReturnVal == GIT_ENOTFOUND) {
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "No such repository, attempting to clone");
 
-        gitReturnVal = git_clone(&repository, s_REMOTE_URL, s_ROOT, nullptr);
+        gitReturnVal = git_clone(&repository, s_REMOTE_URL, m_taskPath.toStdString().c_str(), nullptr);
     }
 
     if (gitReturnVal != GIT_OK) {   // Clone fail or other error while opening
@@ -86,23 +89,23 @@ void CTaskStorage::libgit2cleanUp(git_repository *repository, git_remote *remote
 }
 
 QString CTaskStorage::getTaskName(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "/" + s_TASK_NAME_FILENAME);
+    return readFromUTF8File(m_taskPath + "/" + taskID + "/" + s_TASK_NAME_FILENAME);
 }
 
 QString CTaskStorage::getTaskDescription(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "/" + s_TASK_DESCIPTION_FILENAME);
+    return readFromUTF8File(m_taskPath + "/" + taskID + "/" + s_TASK_DESCIPTION_FILENAME);
 }
 
 QString CTaskStorage::getTaskRuntimeExamples(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "/" + s_RUNTIME_EXAMPLES_FILENAME);
+    return readFromUTF8File(m_taskPath + "/" + taskID + "/" + s_RUNTIME_EXAMPLES_FILENAME);
 }
 
 QString CTaskStorage::getTaskRecomendedDocumentation(const QString& taskID) const {
-    return readFromUTF8File(s_ROOT + taskID + "/" + s_RECOMENDED_DOCUMENTATION_FILENAME);
+    return readFromUTF8File(m_taskPath + "/" + taskID + "/" + s_RECOMENDED_DOCUMENTATION_FILENAME);
 }
 
 std::list<SIDName> CTaskStorage::getTasks() const {
-    QDir direcory(s_ROOT, "", QDir::Name, QDir::AllDirs | QDir::Readable | QDir::NoDotAndDotDot);
+    QDir direcory(m_taskPath, "", QDir::Name, QDir::AllDirs | QDir::Readable | QDir::NoDotAndDotDot);
     QStringList taskIDs = direcory.entryList();
 
     std::list<SIDName> outTasks;
@@ -134,5 +137,5 @@ QString CTaskStorage::readFromUTF8File(const QString &path) {
 }
 
 void CTaskStorage::libgit2ErrorDebug(int errorCode, const char* const message, const char* const moreInfo) {
-    qDebug() << "libgit2 error: " << errorCode << " <" << message << "> on repository <" << s_ROOT << ">\t" << moreInfo;
+    qDebug() << "libgit2 error: " << errorCode << " <" << message << "> on repository <" << m_taskPath << ">\t" << moreInfo;
 }

@@ -14,7 +14,11 @@ class MainMenu : public QMainWindow
     Q_OBJECT
 
 public:
+    static constexpr const int RESTART_SIGNAL = -1;
+
+public:
     MainMenu(QWidget *parent = nullptr);
+
     ~MainMenu();
 
 private slots:
@@ -25,6 +29,8 @@ private slots:
     void on_tasksButton_clicked();
 
     void on_exitButton_clicked();
+
+    void on_settingsButton_clicked();
 
 private:
     Ui::MainMenu *ui;

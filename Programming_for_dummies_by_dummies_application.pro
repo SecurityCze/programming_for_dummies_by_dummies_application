@@ -16,20 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    csettingsstorage.cpp \
     ctaskstorage.cpp \
     main.cpp \
     mainmenu.cpp \
+    settings.cpp \
     task.cpp \
     taskchooser.cpp
 
 HEADERS += \
+    csettingsstorage.h \
     ctaskstorage.h \
     mainmenu.h \
+    settings.h \
     task.h \
     taskchooser.h
 
 FORMS += \
     mainmenu.ui \
+    settings.ui \
     task.ui \
     taskchooser.ui
 

@@ -152,6 +152,16 @@ QPushButton[objectName=&quot;exitButton&quot;]:hover {
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="settingsButton">
+        <property name="toolTip">
+         <string>Lets user set application settings</string>
+        </property>
+        <property name="text">
+         <string>Settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

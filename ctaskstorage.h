@@ -46,7 +46,7 @@ private:
     /**
      * @brief s_ROOT path to root storage of tasks
      */
-    static constexpr const char *const s_ROOT = "../Programming_for_dummies_by_dummies_tasks/";
+    QString m_taskPath;
 
     /**
      * @brief s_REMOTE_URL url to remote repository
