@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 
 QString CSettingsStorage::getTasksStoragePath()
 {
@@ -31,6 +32,8 @@ void CSettingsStorage::resetToDefaults() {
 void CSettingsStorage::setDefaults(bool force) {
     QSettings settings;
     if (force | !settings.contains(s_TASK_PATH_KEY)) {
-        settings.setValue(s_TASK_PATH_KEY, s_TASK_PATH_DEFAULT);
+        QDir dir(s_TASK_PATH_DEFAULT);
+        dir.makeAbsolute();
+        settings.setValue(s_TASK_PATH_KEY, dir.path());
     }
 }
