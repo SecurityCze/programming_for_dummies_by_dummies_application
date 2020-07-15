@@ -26,6 +26,7 @@ Task::Task(const QString& taskID, const CTaskStorage& taskStorage, QWidget *pare
     ui->taskText->setMarkdown(m_taskStorage.getTaskDescription(m_taskID));
     ui->runtimeExamplesEdit->setMarkdown(m_taskStorage.getTaskRuntimeExamples(m_taskID));
     ui->documentationEdit->setMarkdown(m_taskStorage.getTaskRecomendedDocumentation(m_taskID));
+    ui->errors->setText("");
 }
 
 Task::~Task()
@@ -53,12 +54,32 @@ void Task::on_markButton_clicked()
     // TODO: marking process -> move to another thread to not freze rest of application
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
+    ui->groupboxMarks->show();
 
-    // TMP - compiler develop - START
-    qDebug() << "Compiler present? (0-OK): " << CCompiler::IsAvailable();
-    qDebug() << "Compilation status: (20-OK, 21-Warnings, 22-FAIL)" << CCompiler::Compile(m_fileName, {CCompiler::COMP_PARAMS::PEDANTIC, CCompiler::COMP_PARAMS::WALL});
-    // TMP - compiler develop - END
-
+    // check for compiler
+    CCompiler::COMP_STATES compilatorState = CCompiler::IsAvailable();
+    qDebug() << "Compiler present? (0-OK): " << compilatorState;
+    if( compilatorState != CCompiler::COMP_STATES::COMP_AVAILABLE )
+    {
+        ui->errors->setText( CConstants::s_ERROR_COMPILER_ERR );
+        return;
+    }
+    // compile and resolve
+    CCompiler::COMPILATION compilationState = CCompiler::Compile(m_fileName, CSettingsStorage::getTasksStoragePath() + "/" + m_taskID ,  {CCompiler::COMP_PARAMS::PEDANTIC, CCompiler::COMP_PARAMS::WALL});
+    qDebug() << "Compilation status: (20-OK, 21-Warnings, 22-FAIL)" << compilationState;
+    if( compilationState == CCompiler::COMPILATION::FAILED )
+    {
+        ui->errors->setText( CConstants::s_ERROR_COMP_FAILED );
+        showMark( 0 );
+        return;
+    }
+    else if( compilationState == CCompiler::COMPILATION::WITH_WARNINGS )
+    {
+        ui->errors->setText( QString( CConstants::s_ERROR_COMP_WARNS ) + QString::number( s_COMPILATION_ERR_PENALTY_PERCENT ) + QString( "%" ) );
+        penalisation = true;
+    }
+    else if( compilationState == CCompiler::COMPILATION::SUCCESSFUL )
+        ui->errors->setText( CConstants::s_COMPILATION_SUCCES );
     // Just a DUMMY -> to show how it could look when marking
 //    for(int i = 0; i <= 100; ++i) {
 //        QThread::msleep(50);
@@ -66,12 +87,16 @@ void Task::on_markButton_clicked()
 //    }
 
     int mark = 110;
-    showResult(mark, "Errors will be here:");
+    // showResult(mark, "Errors will be here:");
 }
 
 void Task::showResult(int mark, const QString& errors) {
     ui->groupboxMarks->show();
     ui->errors->setText(errors);
+}
+
+void Task::showMark( int mark )
+{
     ui->percentageMark->display(mark);
     if (mark <= 0)
         ui->percentageMark->setStyleSheet("QLCDNumber { color: red }");

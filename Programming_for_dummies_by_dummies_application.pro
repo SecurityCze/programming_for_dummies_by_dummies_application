@@ -34,6 +34,7 @@ SOURCES += \
 HEADERS += \
     ccodeparser.h \
     ccompiler.h \
+    cconstants.h \
     csettingsstorage.h \
     cmemdebugger.h \
     ctaskabstract.h \

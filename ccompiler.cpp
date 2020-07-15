@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QList>
+#include <QDir>
 
 #if defined _WIN32 || defined _WIN64
     #include <windows.h>
@@ -16,10 +17,6 @@
 
 // ---------- PUBLIC ----------
 
-CCompiler::CCompiler()
-{
-}
-
 CCompiler::COMP_STATES CCompiler::IsAvailable()
 {
     if( ! SupportedPlatform() )
@@ -27,14 +24,14 @@ CCompiler::COMP_STATES CCompiler::IsAvailable()
 
     RunDefaultCompilerDP();
 
-    QFile tmpFile("tmp.txt");
+    QFile tmpFile( s_COMPILER_CHECK_FILE );
     if( ! tmpFile.open( QIODevice::ReadOnly | QIODevice::Text ) )
         return COMP_STATES::COMP_ERROR;
 
     QString tmpString = tmpFile.readLine();
     tmpString.remove( tmpString.length() - 1 , 1 ); // parses QString and deletes \n read by readLine
-
-    if( tmpString == "g++: fatal error: no input files" )
+    qDebug() << "|" << tmpString << "|\n";
+    if( tmpString == s_COMPILER_CHECK_QUOTE )
     {
         CloseAndDelete( tmpFile );
         return COMP_STATES::COMP_AVAILABLE;
@@ -48,29 +45,31 @@ bool CCompiler::SupportedPlatform()
     return ( PLATFORM == 0 || PLATFORM == 1 );
 }
 
-CCompiler::COMPILATION CCompiler::Compile( const QString & filePath , const QList< CCompiler::COMP_PARAMS > & arguments )
+CCompiler::COMPILATION CCompiler::Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments )
 {
+    // if "sources" file doesn't exist, create it
+    if( ! QDir().exists( taskPath + "/" + CConstants::s_SOURCE_FOLDER ) ) QDir().mkdir( taskPath + "/" + CConstants::s_SOURCE_FOLDER );
+    QString processedPath = taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CCodeParser::Parse( filePath , taskPath );
 #if defined _WIN32 || defined _WIN64
-        QFile result("a.exe");
+        QFile result( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN );
 #elif defined __linux__
-        QFile result("a.out");
+        QFile result( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_LIN );
 #endif
-
-    QFile errors("errors.txt");
+    QFile errors( taskPath + CConstants::s_SOURCE_FOLDER );
 
     if( result.exists() ) result.remove();
     if( errors.exists() ) errors.remove();
 
-    CompileFileParamsDP( filePath , PrepareParams( arguments ) );
-    return EvaluateCompilation();
+    CompileFileParamsDP( processedPath , taskPath , PrepareParams( arguments ) );
+    return EvaluateCompilation( taskPath );
 }
 
-void CCompiler::CompileFileParamsDP( const QString & filePath , const QString & params )
+void CCompiler::CompileFileParamsDP( const QString & filePath , const QString & taskPath , const QString & params )
 {
 #if defined _WIN32 || defined _WIN64
-    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C g++ " + params + " " + filePath + " 2> errors.txt" ).toStdString().c_str() , 0 , SW_HIDE );
+    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C g++ " + params + " -o " + taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN + " " + filePath + " 2> " + taskPath +  "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_COMPILATION_ERRORS ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__
-    system( "g++ " + params + " " + filePath + " 2> errors.txt" ).toStdString().c_str() );
+    system( "g++ " + params + " -o " + taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN + " " + filePath + " 2> " + taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_COMPILATION_ERRORS ).toStdString().c_str() );
 #endif
 }
 
@@ -78,12 +77,15 @@ void CCompiler::CompileFileParamsDP( const QString & filePath , const QString & 
 
 void CCompiler::RunDefaultCompilerDP()
 {
+    unsigned int msRemTime = 5000;  // compiler will have 5 secs to create folder and check it
 #if defined _WIN32 || defined _WIN64
-        ShellExecuteA( 0 , "open" , "cmd.exe" , "/C g++ 2> tmp.txt" , 0 , SW_HIDE );
+        ShellExecuteA( 0 , "open" , "cmd.exe" , ( QString( "/C g++ 2> " ) + QString( s_COMPILER_CHECK_FILE ) ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__
-        system("g++ 2> tmp.txt");
+        system( ( QString( "/C g++ 2> " ) + QString( s_COMPILER_CHECK_FILE ) ).toStdString().c_str() );
 #endif
-    QThread::msleep( 50 );  // program has to wait while file is not created (dfaq is this?, I <3 Ubuntu, not this garbage);
+    for( ; msRemTime ; msRemTime -= 100)
+        if( QFile( s_COMPILER_CHECK_FILE ).exists() ) break;
+        else                                          QThread::msleep( 50 );  // program has to wait while file is not created (dfaq is this?, I <3 Ubuntu, not this garbage);
 }
 
 void CCompiler::CloseAndDelete( QFile & file )
@@ -105,17 +107,17 @@ QString CCompiler::PrepareParams( const QList< CCompiler::COMP_PARAMS > & argume
     return retParams;
 }
 
-CCompiler::COMPILATION CCompiler::EvaluateCompilation()
+CCompiler::COMPILATION CCompiler::EvaluateCompilation( const QString & taskPath )
 {
     QThread::msleep( 1000 );    // wait for compilation be done and files be created
 
 #if defined _WIN32 || defined _WIN64
-        QFile result("a.exe");
+        QFile result( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN );
 #elif defined __linux__
-        QFile result("a.out");
+        QFile result( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_LIN );
 #endif
 
-    QFile errors("errors.txt");
+    QFile errors( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_COMPILATION_ERRORS );
 
     if     ( result.exists() && errors.size() == 0 ) return COMPILATION::SUCCESSFUL;
     else if( result.exists() && errors.size() >  0 ) return COMPILATION::WITH_WARNINGS;
