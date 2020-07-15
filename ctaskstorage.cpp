@@ -16,7 +16,7 @@ CTaskStorage::CTaskStorage(): m_taskPath(CSettingsStorage::getTasksStoragePath()
     reloadTasksFromRemote();
 }
 
-void CTaskStorage::reloadTasksFromRemote() {
+bool CTaskStorage::reloadTasksFromRemote() {
     git_libgit2_init();
     git_repository* repository = nullptr;
     git_remote* remote = nullptr;
@@ -33,14 +33,14 @@ void CTaskStorage::reloadTasksFromRemote() {
     if (gitReturnVal != GIT_OK) {   // Clone fail or other error while opening
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, no respositry, unable to create new one");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     gitReturnVal = git_remote_lookup(&remote, repository, s_GIT_REMOTE_NAME);
     if (gitReturnVal != GIT_OK) {
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, git remote not found");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     // Turn off missing field initializer - intended 0 initialization as per C standard
@@ -52,33 +52,34 @@ void CTaskStorage::reloadTasksFromRemote() {
 
     gitReturnVal = git_remote_connect(remote, GIT_DIRECTION_FETCH, &callbacks, nullptr, nullptr);
     if (gitReturnVal != GIT_OK) {
-        libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, git commect on remote failed");
+        libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, git connect on remote failed");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     gitReturnVal = git_remote_fetch(remote, nullptr, nullptr, "pull");
     if (gitReturnVal != GIT_OK) {
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, git fatch fail");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     gitReturnVal = git_revparse_single(&headObject, repository, "HEAD");    if (gitReturnVal != GIT_OK) {
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, unable to get head object");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     gitReturnVal = git_reset(repository, headObject, GIT_RESET_HARD, nullptr);
     if (gitReturnVal != GIT_OK) {
         libgit2ErrorDebug(gitReturnVal, git_error_last()->message, "Fatal, git reset --hard fail");
         libgit2cleanUp(repository, remote, headObject);
-        return;
+        return false;
     }
 
     libgit2cleanUp(repository, remote, headObject);
     qDebug() << "Finished git pull";
+    return true;
 }
 
 void CTaskStorage::libgit2cleanUp(git_repository *repository, git_remote *remote, git_object *object) {

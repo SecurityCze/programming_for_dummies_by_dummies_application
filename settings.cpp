@@ -1,13 +1,13 @@
 #include "settings.h"
 #include "ui_settings.h"
 #include "csettingsstorage.h"
+#include "ctaskstate.h"
 #include "mainmenu.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
 #include <QDebug>
-
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -38,22 +38,34 @@ void Settings::on_taskStorageChooseDialogButton_clicked()
     ui->applyAllButton->setEnabled(true);
 }
 
-void Settings::applyStorageChange()
+bool Settings::applyStorageChange()
 {
+    QDir newDir(ui->taskStorageChosenLocation->text());
+    if (!newDir.isEmpty()) {
+        newDir.mkdir(s_fallbackDirectoryName);
+        newDir.cd(s_fallbackDirectoryName);
+        if (!newDir.isEmpty()) {
+            QMessageBox::warning(this, tr("Invalid directory"), tr("Unable to use this location, please choose a empty directory."));
+            return false;
+        }
+    }
+
     if (ui->taskStorageDeleteCurrentBox->isChecked()) {
         qDebug() << "Deleting: " << CSettingsStorage::getTasksStoragePath();
         QDir dir(CSettingsStorage::getTasksStoragePath());
         qDebug() << "Remove status (true succes): " << dir.removeRecursively();
     }
 
-    CSettingsStorage::setTasksStoragePath(ui->taskStorageChosenLocation->text());
+    CSettingsStorage::setTasksStoragePath(newDir.absolutePath());
+    return true;
 }
 
 void Settings::on_taskStorageApplyButton_clicked()
 {
     if (!resetApplication())
         return;
-    applyStorageChange();
+    if (!applyStorageChange())
+        return;
     QApplication::exit(MainMenu::RESTART_SIGNAL);
 }
 
@@ -69,7 +81,8 @@ void Settings::on_applyAllButton_clicked()
 
     // Apply all settings that are enabled
     if (ui->taskStorageApplyButton->isEnabled())
-        applyStorageChange();
+        if (!applyStorageChange())
+            return;
 
     QApplication::exit(MainMenu::RESTART_SIGNAL);
 }

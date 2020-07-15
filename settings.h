@@ -29,9 +29,11 @@ private slots:
 private:
     bool resetApplication();
 
-    void applyStorageChange();
+    bool applyStorageChange();
 
     Ui::Settings *ui;
+
+    static constexpr const char *const s_fallbackDirectoryName = "PfDbD_tasks";
 };
 
 #endif // SETTINGS_H

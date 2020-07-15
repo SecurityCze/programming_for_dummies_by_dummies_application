@@ -24,7 +24,7 @@ public:
 
     virtual ~CTaskStorage() = default;
 
-    void reloadTasksFromRemote();
+    bool reloadTasksFromRemote();
 
     QString getTaskName(const QString& taskID) const;
 

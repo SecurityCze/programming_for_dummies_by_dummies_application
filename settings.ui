@@ -90,10 +90,10 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
      <item row="1" column="0" colspan="2">
       <widget class="QCheckBox" name="taskStorageDeleteCurrentBox">
        <property name="text">
-        <string>Delete current storage location</string>
+        <string>Delete old storage location</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
