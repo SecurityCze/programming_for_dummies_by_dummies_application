@@ -4,8 +4,13 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainMenu w;
-    w.show();
-    return a.exec();
+    int returnCode = 0;
+    do {
+        QApplication a(argc, argv);
+        MainMenu mainWindow;
+        mainWindow.show();
+        returnCode = a.exec();
+    } while (returnCode == MainMenu::RESTART_SIGNAL);
+
+    return returnCode;
 }

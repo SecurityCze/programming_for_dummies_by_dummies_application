@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Settings</class>
+ <widget class="QDialog" name="Settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: #E1E7F2;
+}
+
+QPushButton {
+	padding: 10px;
+	color: white;
+	font-weight: bold;
+	border: none;
+}
+
+/* default button style */
+QPushButton {
+	background-color: black;
+}
+
+QPushButton:hover {
+	background-color: grey;
+}
+
+/* OKbutton button style */
+QPushButton[objectName=&quot;OKbutton&quot;], QPushButton[objectName=&quot;applyAllButton&quot;], QPushButton[objectName=&quot;taskStorageApplyButton&quot;] {
+	background-color: #85B404;
+}
+
+QPushButton[objectName=&quot;OKbutton&quot;]:hover, QPushButton[objectName=&quot;applyAllButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:hover {
+	background-color: #A2DC04;
+}
+
+/* refresh button style */
+QPushButton[objectName=&quot;refreshButton&quot;], QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;],
+QPushButton[objectName=&quot;resetDefaultButton&quot;] {
+	background-color: #197BBD;
+}
+
+QPushButton[objectName=&quot;refreshButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;]:hover,
+QPushButton[objectName=&quot;resetDefaultButton&quot;]:hover {
+	background-color: #6A7FDB;
+}
+
+/* &quot;deny&quot; button style */
+QPushButton[objectName=&quot;returnButton&quot;] {
+	background-color: #E0001E;
+}
+
+QPushButton[objectName=&quot;returnButton&quot;]:hover {
+	background-color: #FF0022;
+}
+
+QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:disabled {
+    background-color: #87898D;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="taskStorageLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="taskStorageSettingsNameLabel">
+       <property name="text">
+        <string>Task storage</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="taskStorageChosenLocation"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="taskStorageChooseDialogButton">
+       <property name="text">
+        <string>Choose location</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QCheckBox" name="taskStorageDeleteCurrentBox">
+       <property name="text">
+        <string>Delete current storage location</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="taskStorageApplyButton">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="ApplyReturnLayout">
+     <item>
+      <widget class="QPushButton" name="returnButton">
+       <property name="text">
+        <string>Return</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetDefaultButton">
+       <property name="text">
+        <string>Reset to defaults</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyAllButton">
+       <property name="text">
+        <string>Apply all</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

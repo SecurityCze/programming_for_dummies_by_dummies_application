@@ -1,13 +1,20 @@
 #include "mainmenu.h"
 #include "ui_mainmenu.h"
 #include "taskchooser.h"
+#include "csettingsstorage.h"
+#include "settings.h"
 
 #include <QMessageBox>
+#include <QSettings>
+#include <QDebug>
 
 MainMenu::MainMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainMenu)
 {
+    CSettingsStorage::initStorage();
+    m_taskChooser = new TaskChooser;
+
     ui->setupUi(this);
 }
 
@@ -28,9 +35,10 @@ void MainMenu::on_actionAbout_triggered()
 
 void MainMenu::on_tasksButton_clicked()
 {
-    TaskChooser tasks(nullptr);
     hide();
-    tasks.exec();
+    m_taskChooser->loadTasks();
+    m_taskChooser->move(pos());
+    m_taskChooser->exec();
     show();
 }
 
@@ -39,4 +47,11 @@ void MainMenu::on_exitButton_clicked()
     auto reply = QMessageBox::question(this, tr("Exit?"), tr("Do you wish to exit the application?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
     if (reply == QMessageBox::Yes)
         QApplication::quit();
+}
+
+void MainMenu::on_settingsButton_clicked()
+{
+    Settings settingsWindow(this);
+
+    settingsWindow.exec();
 }
