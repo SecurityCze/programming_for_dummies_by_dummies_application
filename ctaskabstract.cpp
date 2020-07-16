@@ -3,6 +3,7 @@
 #include <QString>
 #include <QFile>
 #include <QDebug>
+#include <QTextStream>
 
 CTaskAbstract::~CTaskAbstract()
 {
@@ -37,6 +38,7 @@ bool CTaskAbstract::Compare() const
 {
     QFile resFile( m_resFile );
     QFile refFile( m_refFile );
+
     QString resLine = "", refLine = "";
 
     if(    ! resFile.open( QIODevice::ReadOnly | QIODevice::Text )
@@ -46,11 +48,14 @@ bool CTaskAbstract::Compare() const
         return false;
     }
 
+    QTextStream resStream( &resFile );
+    QTextStream refStream( &refFile );
+
     if( resFile.size() != refFile.size() )  return false;
     while( ! resFile.atEnd() && ! refFile.atEnd() )
     {
-        resLine = resFile.readLine();
-        refLine = refFile.readLine();
+        resLine = resStream.readLine();
+        refLine = refStream.readLine();
 
         if( resLine != refLine ) return false;
     }

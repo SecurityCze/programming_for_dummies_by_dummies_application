@@ -6,6 +6,7 @@
 #include <QString>
 #include <QFile>
 #include <QDebug>
+#include <QTextStream>
 
 /**
  * @class CTaskAbstract

@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QTextStream>
 #include <QDebug>
+#include <QTextCodec>
 
 // int	msecsSinceStartOfDay() const
 QString CCodeParser::Parse( const QString & codePath , const QString & taskPath )
@@ -24,6 +25,8 @@ QString CCodeParser::Parse( const QString & codePath , const QString & taskPath 
         QString funcName = "func" + QString::number(  QTime().currentTime().msecsSinceStartOfDay() );
 
         QTextStream ts( & newCode );
+        ts.setCodec( QTextCodec::codecForName("UTF-8") );
+
         InsertHeaders( ts , mainMatch.captured( 1 ) );
         RenameMain( ts , mainMatch.captured( 2 ) , funcName ); // this function serves to make func instead of main for no collisions
         InsertFooter( ts , mainMatch.captured( 3 ) );
@@ -39,7 +42,7 @@ void CCodeParser::InsertHeaders( QTextStream & ts , const QString & header )
     ts << "#include <stdio.h>\n";
     ts << "#include <stdlib.h>\n";
     ts << "#include <csignal>\n";
-    ts << header;
+    ts << header.toUtf8();
 }
 
 void CCodeParser::InsertMain( QTextStream & ts , const QString & funcName )
@@ -50,12 +53,12 @@ void CCodeParser::InsertMain( QTextStream & ts , const QString & funcName )
 
 void CCodeParser::InsertFooter( QTextStream & ts , const QString & footer )
 {
-    ts << footer;
+    ts << footer.toUtf8();
 }
 
 void CCodeParser::RenameMain( QTextStream & ts , const QString & main , const QString & funcName )
 {
     ts << "int " << funcName << "()\n{";
-    ts << main;
+    ts << main.toUtf8();
     ts << "}\n";
 }
