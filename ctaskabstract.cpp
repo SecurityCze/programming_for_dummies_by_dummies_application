@@ -51,7 +51,7 @@ bool CTaskAbstract::Compare() const
     QTextStream resStream( &resFile );
     QTextStream refStream( &refFile );
 
-    if( resFile.size() != refFile.size() )  return false;
+    //if( resFile.size() != refFile.size() )  return false;
     while( ! resFile.atEnd() && ! refFile.atEnd() )
     {
         resLine = resStream.readLine();

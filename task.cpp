@@ -56,6 +56,7 @@ void Task::on_markButton_clicked()
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
     ui->groupboxMarks->show();
+    repaint();
 
     // check for compiler
     CCompiler::COMP_STATES compilatorState = CCompiler::IsAvailable();
@@ -128,7 +129,8 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
 
     for( const auto & test : testList )
     {
-        ui->progressBarSolution->setValue( ( nthTest / testList.size() ) * 100 );
+        ui->progressBarSolution->setValue( ( static_cast<float>(nthTest) / testList.size() ) * 100 );
+        repaint();
         ui->errors->append("Test #" + QString::number( nthTest ) );
 
         if( test.m_timeLimit )
