@@ -24,6 +24,7 @@ SOURCES += \
     ctasknolimit.cpp \
     ctaskstate.cpp \
     ctaskstorage.cpp \
+    ctasktestprocesser.cpp \
     ctasktimelimited.cpp \
     main.cpp \
     mainmenu.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     ctasknolimit.h \
     ctaskstate.h \
     ctaskstorage.h \
+    ctasktestprocesser.h \
     ctasktimelimited.h \
     mainmenu.h \
     settings.h \

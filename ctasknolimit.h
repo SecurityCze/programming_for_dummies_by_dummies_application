@@ -1,14 +1,17 @@
 #ifndef CTASKNOLIMIT_H
 #define CTASKNOLIMIT_H
 
+#include <QThread>
+
 #include "ctaskabstract.h"
 #include "cmemdebugger.h"
+#include "cconstants.h"
 
 class CTaskNoLimit : public CTaskAbstract
 {
 public:
-    CTaskNoLimit( const QString & inputPath , const QString & referencePath );
-    CTaskState::TASK_STATE Process() override;
+    CTaskNoLimit( const QString & testName , const QString & taskPath );
+    CTaskState Process() override;
 
 private:
     bool IsSegfault();

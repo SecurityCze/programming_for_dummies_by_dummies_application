@@ -66,6 +66,8 @@ CCompiler::COMPILATION CCompiler::Compile( const QString & filePath , const QStr
 
 void CCompiler::CompileFileParamsDP( const QString & filePath , const QString & taskPath , const QString & params )
 {
+    QString debug = ( "/C g++ " + params + " -o " + taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN + " " + filePath + " 2> " + taskPath +  "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_COMPILATION_ERRORS );
+    qDebug() << debug;
 #if defined _WIN32 || defined _WIN64
     ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C g++ " + params + " -o " + taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN + " " + filePath + " 2> " + taskPath +  "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_COMPILATION_ERRORS ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__

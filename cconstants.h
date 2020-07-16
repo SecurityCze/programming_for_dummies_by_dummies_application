@@ -19,6 +19,10 @@ public:
     static constexpr const char *const s_ERROR_COMP_FAILED  = "I wasn't able to compile your code. Probably bad code. :)";
     static constexpr const char *const s_ERROR_COMP_WARNS   = "I compiled your code but I found some nasty errors. Go fix them. Mark penalisation: ";
     static constexpr const char *const s_COMPILATION_SUCCES = "Compilation succesful!";
+    static constexpr const char *const s_NO_TESTS_FOUND     = "I wasn't able to find any tests, task is probably broken. Contact administators for more help.";
+
+    static constexpr const char *const s_TEST_INDEXER       = "test_indexer.txt";
+    static constexpr const char *const s_TEST_FOLDER        = "tests";
 };
 
 #endif // CCONSTANTS_H

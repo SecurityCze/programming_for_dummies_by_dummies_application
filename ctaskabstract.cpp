@@ -4,9 +4,13 @@
 #include <QFile>
 #include <QDebug>
 
-CTaskState::TASK_STATE CTaskAbstract::Process()
+CTaskAbstract::~CTaskAbstract()
 {
-    return m_taskState.GetTaskState();
+}
+
+CTaskState CTaskAbstract::Process()
+{
+    return m_taskState;
 }
 
 const CTaskState & CTaskAbstract::GetState() const

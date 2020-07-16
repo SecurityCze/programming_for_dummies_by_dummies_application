@@ -33,7 +33,7 @@ private:
     static void InsertFooter( QTextStream & ts , const QString & footer );
     static void RenameMain( QTextStream & ts , const QString & main , const QString & funcName );
 
-    static constexpr const char *const s_REG_EX_MAIN    = "(.*)int main\\([\\s]*void[\\s]*\\)[\\s]*{(.*)}(.*)";
+    static constexpr const char *const s_REG_EX_MAIN    = "(.*)int main\\([void\\s]*\\)[\\s]*{(.*)}(.*)";
     static constexpr const char *const s_PROCESSED_CODE = "processed-code.cpp";
 };
 

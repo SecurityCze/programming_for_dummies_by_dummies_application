@@ -1,33 +1,46 @@
 #include "ctasknolimit.h"
 
+#include <QThread>
 #if defined _WIN32 || defined _WIN64
     #include <windows.h>
 #endif
 
-CTaskNoLimit::CTaskNoLimit( const QString & inputPath , const QString & referencePath )
+CTaskNoLimit::CTaskNoLimit( const QString & testName , const QString & taskPath )
 {
-    m_inFile = inputPath;
-    m_refFile = referencePath;
-    m_resFile = "result.txt";
+    m_inFile = taskPath + "/" + CConstants::s_TEST_FOLDER + "/" + testName + "_in.txt";
+    m_refFile = taskPath + "/" + CConstants::s_TEST_FOLDER + "/" + testName + "_ref.txt";
+    m_resFile = taskPath + "/" + CConstants::s_TEST_FOLDER + "/" + testName + "_res.txt";
+    m_errorFile = taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + m_errorFile;
+    m_taskPath = taskPath;
 }
 
-CTaskState::TASK_STATE CTaskNoLimit::Process()
+CTaskState CTaskNoLimit::Process()
 {
     CTaskState::TASK_STATE returnState;
     CMemdebugger::deb_struct memResult{ -1 , -1 , false };
     RemoveGarbage();
 
 #if defined _WIN32 || defined _WIN64
-    QFile m_program("a.exe");
-    if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
-    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C a.exe < " + m_inFile + " > " + m_resFile + " 2> " + m_errorFile ).toStdString().c_str() , 0 , SW_HIDE );
+    QFile m_program( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN );
+    if( ! m_program.exists() )
+    {
+        qDebug() << "It doesn't exist";
+        m_taskState.SetTaskState( CTaskState::TASK_STATE::TERROR );
+        return m_taskState;
+    }
+    ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C " + m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN + " < " + m_inFile + " > " + m_resFile + " 2> " + m_errorFile ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__
-    QFile m_program("a.out");
-    if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
-    // system("./a.out < " + m_inFile + " > " + m_resFile + " 2> " + errorPath ); // shouldnt uncomment, just for future I dont know what the fuck I fucked up moment to realise to how to that
+    QFile m_program( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_LIN );
+    if( ! m_program.exists() )
+    {
+        m_taskState.SetTaskState( CTaskState::TASK_STATE::TERROR );
+        return m_taskState;
+    }
+    // system( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_LIN + " < " + m_inFile + " > " + m_resFile + " 2> " + m_errorFile ); // shouldnt uncomment, just for future I dont know what the fuck I fucked up moment to realise to how to that
     memResult = CMemdebugger::Process( "a.out " , m_errorFile );
 #endif
     m_taskState.SetEndTime();
+    QThread::msleep( 2000 );
 
     if( IsSegfault() ) returnState = CTaskState::TASK_STATE::FAILED;
 
@@ -41,12 +54,12 @@ CTaskState::TASK_STATE CTaskNoLimit::Process()
     if( IsValidMemResult( memResult ) ) m_taskState.MemoryUsed( memResult.m_usedMem );
 
     m_taskState.SetTaskState( returnState );
-    return m_taskState.GetTaskState();
+    return m_taskState;
 }
 
 bool CTaskNoLimit::IsSegfault()
 {
-    QFile errorFile( m_errorFile );
+    QFile errorFile( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + m_errorFile );
     if( errorFile.exists() && errorFile.size() > 0 )
     {
         m_taskState.SetSegfault( true );

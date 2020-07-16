@@ -12,7 +12,7 @@ CTaskTimeLimited::CTaskTimeLimited( const QString & inputPath , const QString & 
     m_resFile = "result.txt";
 }
 
-CTaskState::TASK_STATE CTaskTimeLimited::Process()
+CTaskState CTaskTimeLimited::Process()
 {
     CTaskState::TASK_STATE returnState = CTaskState::TASK_STATE::SUCCESSFUL;
     CMemdebugger::deb_struct memResult{ -1 , -1 , false };
@@ -20,11 +20,19 @@ CTaskState::TASK_STATE CTaskTimeLimited::Process()
 
 #if defined _WIN32 || defined _WIN64
     QFile m_program("a.exe");
-    if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
+    if( ! m_program.exists() )
+    {
+        m_taskState.SetTaskState( CTaskState::TASK_STATE::TERROR );
+        return m_taskState;
+    }
     ShellExecuteA( 0 , "open" , "cmd.exe" , ( "/C a.exe < " + m_inFile + " > " + m_resFile + " 2> " + m_errorFile ).toStdString().c_str() , 0 , SW_HIDE );
 #elif defined __linux__
     QFile m_program("a.out");
-    if( ! m_program.exists() ) return CTaskState::TASK_STATE::TERROR;
+    if( ! m_program.exists() )
+    {
+        m_taskState.SetTaskState( CTaskState::TASK_STATE::TERROR );
+        return m_taskState;
+    }
     // system("./a.out < " + m_inFile + " > " + m_resFile + " 2> " + errorPath ); // shouldnt uncomment, just for future I dont know what the fuck I fucked up moment to realise to how to that
     memResult = CMemdebugger::Process( "a.out " , m_errorFile );
 #endif
@@ -44,7 +52,7 @@ CTaskState::TASK_STATE CTaskTimeLimited::Process()
     if( IsValidMemResult( memResult ) ) m_taskState.MemoryUsed( memResult.m_usedMem );
 
     m_taskState.SetTaskState( returnState );
-    return m_taskState.GetTaskState();
+    return m_taskState;
 }
 
 bool CTaskTimeLimited::IsSegfault()
