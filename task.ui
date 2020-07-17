@@ -332,7 +332,11 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="runtimeExamplesEdit"/>
+      <widget class="QTextEdit" name="runtimeExamplesEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

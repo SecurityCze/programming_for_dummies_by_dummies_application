@@ -28,6 +28,11 @@ TaskChooser::~TaskChooser()
 
 void TaskChooser::on_returnButton_clicked()
 {
+    for (Task *currentTask: m_tasks) {
+        currentTask->close();
+        delete currentTask;
+    }
+    m_tasks.clear();
     done(s_OK);
 }
 
