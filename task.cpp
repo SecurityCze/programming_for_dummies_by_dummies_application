@@ -77,9 +77,8 @@ void Task::on_markButton_clicked()
 
     int passedTests = processTests( testList );
 
-
     int mark = ( passedTests / ( testList.size() * 2 ) ) * 100;
-    if( penalisation ) mark *= 1.0f - (float)s_COMPILATION_ERR_PENALTY_PERCENT;
+    if( penalisation ) mark *= 1.0f - ( static_cast< float >( s_COMPILATION_ERR_PENALTY_PERCENT ) / 100 );
 
     ui->errors->append("Final score: " + QString::number( mark ) );
     showMark( mark );
