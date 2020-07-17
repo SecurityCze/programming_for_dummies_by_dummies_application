@@ -136,7 +136,7 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
         if( test.m_timeLimit )
         {
             qDebug() << "allocating task #" << QString::number( nthTest ) << " timeLimited";
-            task = new CTaskTimeLimited( test.m_testName + "_in.txt" , test.m_testName + "_ref.txt" , test.m_timeLimit );
+            task = new CTaskTimeLimited( test.m_testName , CSettingsStorage::getTasksStoragePath() + "/" + m_taskID , test.m_timeLimit );
         }
         else
         {
