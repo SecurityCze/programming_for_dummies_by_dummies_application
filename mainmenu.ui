@@ -73,6 +73,22 @@ QPushButton[objectName=&quot;settingsButton&quot;] {
 
 QPushButton[objectName=&quot;settingsButton&quot;]:hover {
 	background-color: #F1BDFF;
+}
+
+QPushButton[objectName=&quot;aboutButton&quot;] {
+	background-color: #197BBD;
+}
+
+QPushButton[objectName=&quot;aboutButton&quot;]:hover {
+	background-color: #6A7FDB;
+}
+
+QPushButton[objectName=&quot;aboutQtButton&quot;] {
+	background-color: #FFAE19;
+}
+
+QPushButton[objectName=&quot;aboutQtButton&quot;]:hover {
+	background-color: #FFC04C;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
