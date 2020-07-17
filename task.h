@@ -2,8 +2,19 @@
 #define TASK_H
 
 #include "ctaskstorage.h"
+#include "csettingsstorage.h"
+#include "cconstants.h"
+#include "ccompiler.h"
+#include "ctasktestprocesser.h"
+#include "ctasknolimit.h"
+#include "ctasktimelimited.h"
 
 #include <QDialog>
+#include <QFileDialog>
+#include <QDebug>
+#include <QTimeLine>
+#include <QThread>
+#include <QList>
 
 namespace Ui {
 class Task;
@@ -24,7 +35,13 @@ private slots:
 
     void on_markButton_clicked();
 
-    void showResult(int mark, const QString& errors = "");
+    void showMark( int mark );
+
+    void compilatorCheck( CCompiler::COMP_STATES compilatorState );
+
+    void compilationCheck( CCompiler::COMPILATION compilationState );
+
+    int  processTests( const QList< CTaskTestProcesser::CTaskSettings > & testList );
 
     void on_documentationBox_stateChanged(int arg1);
 
@@ -33,9 +50,11 @@ private slots:
 private:
     Ui::Task *ui;
     static constexpr const int s_OK = 0;
+    static constexpr const int s_COMPILATION_ERR_PENALTY_PERCENT = 15;
     QString m_taskID;
     QString m_fileName = "";
     const CTaskStorage& m_taskStorage;
+    bool penalisation = false;
 };
 
 #endif // TASK_H

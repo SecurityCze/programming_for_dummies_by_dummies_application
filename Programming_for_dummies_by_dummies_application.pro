@@ -15,10 +15,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# Apllication icon
+win32:RC_ICONS += images/icon.ico
+
 SOURCES += \
+    ccodeparser.cpp \
     ccompiler.cpp \
     csettingsstorage.cpp \
+    cmemdebugger.cpp \
+    ctaskabstract.cpp \
+    ctasknolimit.cpp \
+    ctaskstate.cpp \
     ctaskstorage.cpp \
+    ctasktestprocesser.cpp \
+    ctasktimelimited.cpp \
     main.cpp \
     mainmenu.cpp \
     settings.cpp \
@@ -26,9 +36,17 @@ SOURCES += \
     taskchooser.cpp
 
 HEADERS += \
+    ccodeparser.h \
     ccompiler.h \
+    cconstants.h \
     csettingsstorage.h \
+    cmemdebugger.h \
+    ctaskabstract.h \
+    ctasknolimit.h \
+    ctaskstate.h \
     ctaskstorage.h \
+    ctasktestprocesser.h \
+    ctasktimelimited.h \
     mainmenu.h \
     settings.h \
     task.h \

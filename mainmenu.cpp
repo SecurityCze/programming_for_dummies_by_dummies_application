@@ -55,3 +55,13 @@ void MainMenu::on_settingsButton_clicked()
 
     settingsWindow.exec();
 }
+
+void MainMenu::on_aboutQtButton_clicked()
+{
+    QMessageBox::aboutQt(this, tr("About Qt framework."));
+}
+
+void MainMenu::on_aboutButton_clicked()
+{
+    QMessageBox::about(this, tr("About creators."), tr("Who are we? We are two students from Czech republic who were asked to help their friends with programming. So here we are. We have created this \"masterpiece\" to prepare them for tough life with beatiful C and C++.\n\nContact:\nEmail: sandksoftware@seznam.cz"));
+}

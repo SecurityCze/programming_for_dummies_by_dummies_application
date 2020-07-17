@@ -1,6 +1,8 @@
 #ifndef CCOMPILER_H
 #define CCOMPILER_H
 
+#include "cconstants.h"
+#include "ccodeparser.h"
 #include <QFileDialog>
 #include <QList>
 
@@ -14,7 +16,7 @@ public:
     /* states of success of compilated program */
     enum COMPILATION : int { SUCCESSFUL     = 20 , WITH_WARNINGS , FAILED     };
 
-    CCompiler();
+    CCompiler() = delete;
     /**
      * @brief returns COMP_STATES::{ COMP_AVAILABLE , COMP_MISSING , COMP_ERROR } depending on if compilator is present
      * @return COMP_STATES::{ COMP_AVAILABLE , COMP_MISSING , COMP_ERROR }
@@ -28,16 +30,17 @@ public:
     /**
      * @brief compiles program given by filePath with given arguments
      * @param filePath      path to source code from current instance of running program
+     * @param taskPath      path to task folder where is located binary output
      * @param arguments     COMP_PARAMS::{ PEDANTIC = -pedantic , WEXTRA = -Wextra , WALL = -Wall }
      *                      entered as list of integers, for example: 'Compile("main.cpp", { CCompiler::COMP_PARAMS::PEDANTIC , CCompiler::COMP_PARAMS::WALL } );'
      * @return COMPILATION::{ SUCCESSFUL , WITH_WARNING , FAILED }
      */
-    static CCompiler::COMPILATION Compile( const QString & filePath , const QList< CCompiler::COMP_PARAMS > & arguments );
+    static CCompiler::COMPILATION Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments );
 private:
     /**
      * @brief compiles file with given parameters
      */
-    static void CompileFileParamsDP( const QString & filePath , const QString & params );
+    static void CompileFileParamsDP( const QString & filePath , const QString & taskPath , const QString & params );
     /**
      * @brief tries to run compiler without any files, just to get known if compiler is available
      * DP - "depending on platform"
@@ -58,7 +61,10 @@ private:
      * @brief evaluates compilation by checking if "a.out/a.exe" was created and by size of error list
      * @return COMPILATION::{ SUCCESSFUL , WITH_WARNING , FAILED }
      */
-    static CCompiler::COMPILATION EvaluateCompilation();
+    static CCompiler::COMPILATION EvaluateCompilation( const QString & taskPath );
+
+    static constexpr const char *const s_COMPILER_CHECK_QUOTE = "g++: fatal error: no input files";
+    static constexpr const char *const s_COMPILER_CHECK_FILE  = "compiler-check.txt";
 };
 
 #endif // CCOMPILER_H

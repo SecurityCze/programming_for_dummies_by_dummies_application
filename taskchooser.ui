@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Choose a task</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/icon.ico</normaloff>images/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
 	background-color: #E1E7F2;
