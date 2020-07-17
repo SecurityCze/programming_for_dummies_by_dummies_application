@@ -129,8 +129,8 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
     for( const auto & test : testList )
     {
         ui->progressBarSolution->setValue( ( static_cast<float>(nthTest) / testList.size() ) * 100 );
-        repaint();
         ui->errors->append("Test #" + QString::number( nthTest ) );
+        repaint();
 
         if( test.m_timeLimit )
         {
