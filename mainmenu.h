@@ -32,6 +32,10 @@ private slots:
 
     void on_settingsButton_clicked();
 
+    void on_aboutQtButton_clicked();
+
+    void on_aboutButton_clicked();
+
 private:
     Ui::MainMenu *ui;
     TaskChooser* m_taskChooser;
