@@ -20,6 +20,9 @@ CTaskState CTaskNoLimit::Process()
     CMemdebugger::deb_struct memResult{ -1 , -1 , false };
     RemoveGarbage();
 
+    QFile finished( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_TASK_FINISHED );
+    if( finished.exists() ) finished.remove();
+
 #if defined _WIN32 || defined _WIN64
     QFile m_program( m_taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN );
     if( ! m_program.exists() )
@@ -40,7 +43,23 @@ CTaskState CTaskNoLimit::Process()
     memResult = CMemdebugger::Process( "a.out " , m_errorFile );
 #endif
     m_taskState.SetEndTime();
-    QThread::msleep( 2000 );
+
+    uint32_t waitTime = CConstants::ui_timeLimit;
+    while( waitTime )
+    {
+        QThread::msleep( 500 );
+        waitTime -= 500;
+        if( finished.exists() ) break;
+    }
+
+    if( ! finished.exists() )
+    {
+        m_taskState.SetMessage( s_TIME_EXCEEDED );
+        m_taskState.SetTaskState( CTaskState::TASK_STATE::FAILED );
+        return m_taskState;
+    }
+    else
+        finished.remove();
 
     if( IsSegfault() ) returnState = CTaskState::TASK_STATE::FAILED;
 

@@ -45,8 +45,10 @@ protected:
     bool Compare() const;
 
     QString m_inFile = "", m_refFile = "", m_resFile = "", m_errorFile = "error_log.txt", m_taskPath = "";
-    uint32_t m_memLimit = 0;
+    uint32_t m_memLimit = 0, m_defTimeLimit = 14000;
     CTaskState m_taskState;
+
+    static constexpr const char *const s_TIME_EXCEEDED  = "Program ran out of time.";
 };
 
 #endif // CTASKABSTRACT_H

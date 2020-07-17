@@ -123,7 +123,7 @@ void Task::compilationCheck( CCompiler::COMPILATION compilationState )
 
 int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testList )
 {
-    int passed = 0, nthTest = 0;
+    int passed = 0, nthTest = 1;
     CTaskState taskState;
     CTaskAbstract * task = nullptr;
 
@@ -151,15 +151,22 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
         {
             ui->errors->append("Test #" + QString::number( nthTest ) + " failed.");
             ui->errors->append("Mark: 0%");
-            ui->errors->append("Error message: ");
-            ui->errors->append( taskState.GetTaskMessage() );
+            if( taskState.GetTaskMessage().size() )
+            {
+                ui->errors->append("Error message: ");
+                ui->errors->append( taskState.GetTaskMessage() );
+            }
             ui->errors->append("");
         }
         else if( taskState.GetTaskState() == CTaskState::TASK_STATE::PART_FAIL )
         {
             ui->errors->append("Test #" + QString::number( nthTest ) + " passed with some errors.");
             ui->errors->append("Mark: 50%");
-            ui->errors->append("Error message: ");
+            if( taskState.GetTaskMessage().size() )
+            {
+                ui->errors->append("Error message: ");
+                ui->errors->append( taskState.GetTaskMessage() );
+            }
             ui->errors->append( taskState.GetTaskMessage() );
             ui->errors->append("");
             passed += 1;

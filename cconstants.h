@@ -1,6 +1,8 @@
 #ifndef CCONSTANTS_H
 #define CCONSTANTS_H
 
+#include <cstdint>
+
 /**
  * @class CConstants
  * @brief CConstants class is designed to hold constants paths, names
@@ -23,6 +25,10 @@ public:
 
     static constexpr const char *const s_TEST_INDEXER       = "test_indexer.txt";
     static constexpr const char *const s_TEST_FOLDER        = "tests";
+
+    static constexpr const char *const s_TASK_FINISHED      = "finished.txt";
+
+    static const uint32_t ui_timeLimit = 14000;
 };
 
 #endif // CCONSTANTS_H
