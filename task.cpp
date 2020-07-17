@@ -77,7 +77,7 @@ void Task::on_markButton_clicked()
 
     int passedTests = processTests( testList );
 
-    int mark = ( passedTests / ( testList.size() * 2 ) ) * 100;
+    int mark = ( static_cast< float >( passedTests ) / ( testList.size() * 2 ) ) * 100;
     if( penalisation ) mark *= 1.0f - ( static_cast< float >( s_COMPILATION_ERR_PENALTY_PERCENT ) / 100 );
 
     ui->errors->append("Final score: " + QString::number( mark ) );
@@ -178,7 +178,7 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
             passed += 2;
         }
         nthTest++;
-        if( task != nullptr ) delete task;
+        delete task;
     }
     return passed;
 }
