@@ -24,9 +24,9 @@ Task::Task(const QString& taskID, const CTaskStorage& taskStorage, QWidget *pare
     QString taskTextName = m_taskStorage.getTaskName(m_taskID);
     ui->taskName->setText(taskTextName);
     setWindowTitle(tr("PfDbD") + " - " + taskTextName);
-    ui->taskText->setMarkdown(m_taskStorage.getTaskDescription(m_taskID));
-    ui->runtimeExamplesEdit->setMarkdown(m_taskStorage.getTaskRuntimeExamples(m_taskID));
-    ui->documentationEdit->setMarkdown(m_taskStorage.getTaskRecomendedDocumentation(m_taskID));
+    ui->taskText->setHtml(m_taskStorage.getTaskDescription(m_taskID));
+    ui->runtimeExamplesEdit->setHtml(m_taskStorage.getTaskRuntimeExamples(m_taskID));
+    ui->documentationEdit->setHtml(m_taskStorage.getTaskRecomendedDocumentation(m_taskID));
     ui->errors->setText("");
 }
 
