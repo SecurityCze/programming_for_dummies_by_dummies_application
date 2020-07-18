@@ -41,7 +41,7 @@ private:
 
     void libgit2ErrorDebug(int errorCode, const char* const message, const char* const moreInfo);
 
-    void libgit2cleanUp(git_repository *repository, git_remote *remote, git_object *object);
+    void libgit2cleanUp(git_repository *repository, git_remote *remote, git_object *object, git_reference *remoteHEAD, git_reference *target, git_reference *newTarger);
 
     /**
      * @brief s_ROOT path to root storage of tasks
@@ -53,6 +53,7 @@ private:
      */
     static constexpr const char *const s_REMOTE_URL = "https://github.com/SecurityCze/programming_for_dummies_by_dummies.git";
     static constexpr const char *const s_GIT_REMOTE_NAME = "origin";
+    static constexpr const char *const s_GIT_REMOTE_REFERENCE = "refs/remotes/origin/master";
 
     static constexpr const char *const s_TASK_NAME_FILENAME = "name.txt";
     static constexpr const char *const s_TASK_DESCIPTION_FILENAME = "task.md";
