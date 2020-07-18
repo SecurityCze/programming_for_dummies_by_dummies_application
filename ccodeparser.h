@@ -26,7 +26,7 @@ public:
      * @param taskPath  path to location where parsed code should be stored
      * @return name of file where is stored new code
      */
-    static QString Parse( const QString & codePath , const QString & taskPath , uint32_t timeLimit = 14000 );
+    static QString Parse( const QString & codePath , const QString & taskPath , uint32_t timeLimit );
 private:
     static void InsertHeaders( QTextStream & ts , const QString & header , const QString & funcName , uint32_t timeLimit );
     static void InsertMain( QTextStream & ts , const QString & funcName , const QString & taskPath );

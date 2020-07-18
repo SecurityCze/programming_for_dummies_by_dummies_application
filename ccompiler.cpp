@@ -45,11 +45,11 @@ bool CCompiler::SupportedPlatform()
     return ( PLATFORM == 0 || PLATFORM == 1 );
 }
 
-CCompiler::COMPILATION CCompiler::Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments )
+CCompiler::COMPILATION CCompiler::Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments , uint32_t timeLimit )
 {
     // if "sources" file doesn't exist, create it
     if( ! QDir().exists( taskPath + "/" + CConstants::s_SOURCE_FOLDER ) ) QDir().mkdir( taskPath + "/" + CConstants::s_SOURCE_FOLDER );
-    QString processedPath = taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CCodeParser::Parse( filePath , taskPath );
+    QString processedPath = taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CCodeParser::Parse( filePath , taskPath , timeLimit );
 #if defined _WIN32 || defined _WIN64
         QFile result( taskPath + "/" + CConstants::s_SOURCE_FOLDER + "/" + CConstants::s_READY_BINARY_WIN );
 #elif defined __linux__

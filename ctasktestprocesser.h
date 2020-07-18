@@ -44,9 +44,10 @@ public:
      * @brief parses task_indexer.txt by CTaskSettings template,
      * more infor in CTaskTestProcceser class comment
      * @param taskIndexer   path to task_indexer.txt
+     * @param tiemLimit     timeLimit given to CCompiler as maximal time limit for program
      * @return  list of parsed tasks settings
      */
-    static QList< CTaskSettings > Parse( const QString & taskIndexerPath );
+    static QList< CTaskSettings > Parse( const QString & taskIndexerPath , uint32_t & timeLimit );
 
 private:
     /**

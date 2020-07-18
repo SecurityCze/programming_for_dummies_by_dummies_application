@@ -48,7 +48,11 @@ void CCodeParser::InsertHeaders( QTextStream & ts , const QString & header , con
     ts << "\n";
 
     ts << "int " + funcName + "bFinished = 0;\n";
-    ts << "int " + funcName + "timeLimit = " + QString::number( timeLimit ) + ";\n";
+
+    if( timeLimit > CConstants::ui_timeLimit )
+        ts << "int " + funcName + "timeLimit = " + QString::number( timeLimit ) + ";\n";
+    else
+        ts << "int " + funcName + "timeLimit = " + QString::number( CConstants::ui_timeLimit ) + ";\n";
 
     ts << "\n";
 
