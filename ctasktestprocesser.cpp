@@ -5,7 +5,7 @@
 #include <QRegularExpression>
 #include <QFile>
 
-QList< CTaskTestProcesser::CTaskSettings > CTaskTestProcesser::Parse( const QString & taskIndexerPath )
+QList< CTaskTestProcesser::CTaskSettings > CTaskTestProcesser::Parse( const QString & taskIndexerPath , uint32_t & timeLimit )
 {
     QList< CTaskSettings > returnList;
     QFile taskIndexer( taskIndexerPath + "/" + CConstants::s_TEST_FOLDER + "/" + CConstants::s_TEST_INDEXER );
@@ -14,6 +14,7 @@ QList< CTaskTestProcesser::CTaskSettings > CTaskTestProcesser::Parse( const QStr
 
     QRegularExpression pattern( s_REG_EXP_TASK_INDEXER_PATTERN );
     QRegularExpressionMatch match;
+    uint32_t newTimeLimit = 0;
 
     while( ! taskIndexer.atEnd() )
     {
@@ -23,6 +24,8 @@ QList< CTaskTestProcesser::CTaskSettings > CTaskTestProcesser::Parse( const QStr
                                             match.captured( 2 ).toInt() ,
                                             match.captured( 3 ).toUInt() ,
                                             match.captured( 4 ).toUInt() ));
+        newTimeLimit = match.captured( 4 ).toUInt();
+        if( newTimeLimit > timeLimit ) timeLimit = newTimeLimit;
     }
     taskIndexer.close();
     return returnList;

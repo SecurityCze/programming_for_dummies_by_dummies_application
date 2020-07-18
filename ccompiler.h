@@ -35,7 +35,7 @@ public:
      *                      entered as list of integers, for example: 'Compile("main.cpp", { CCompiler::COMP_PARAMS::PEDANTIC , CCompiler::COMP_PARAMS::WALL } );'
      * @return COMPILATION::{ SUCCESSFUL , WITH_WARNING , FAILED }
      */
-    static CCompiler::COMPILATION Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments );
+    static CCompiler::COMPILATION Compile( const QString & filePath , const QString & taskPath , const QList< CCompiler::COMP_PARAMS > & arguments , uint32_t timeLimit );
 private:
     /**
      * @brief compiles file with given parameters

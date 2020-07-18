@@ -25,8 +25,8 @@ Task::Task(const QString& taskID, const CTaskStorage& taskStorage, QWidget *pare
     ui->taskName->setText(taskTextName);
     setWindowTitle(tr("PfDbD") + " - " + taskTextName);
     ui->taskText->setMarkdown(m_taskStorage.getTaskDescription(m_taskID));
-    ui->runtimeExamplesEdit->setMarkdown(m_taskStorage.getTaskRuntimeExamples(m_taskID));
-    ui->documentationEdit->setMarkdown(m_taskStorage.getTaskRecomendedDocumentation(m_taskID));
+    ui->runtimeExamplesEdit->setHtml(m_taskStorage.getTaskRuntimeExamples(m_taskID));
+    ui->documentationEdit->setHtml(m_taskStorage.getTaskRecomendedDocumentation(m_taskID));
     ui->errors->setText("");
 }
 
@@ -64,17 +64,20 @@ void Task::on_markButton_clicked()
     compilatorCheck( compilatorState );
     if( compilatorState != CCompiler::COMP_STATES::COMP_AVAILABLE ) return;
 
-    // compile and resolve
-    CCompiler::COMPILATION compilationState = CCompiler::Compile(m_fileName, CSettingsStorage::getTasksStoragePath() + "/" + m_taskID ,  {CCompiler::COMP_PARAMS::PEDANTIC, CCompiler::COMP_PARAMS::WALL});
-    compilationCheck( compilationState );
-    if( compilationState == CCompiler::COMPILATION::FAILED ) return;
+    uint32_t timeLimit = 0;
 
-    QList< CTaskTestProcesser::CTaskSettings > testList = CTaskTestProcesser::Parse( CSettingsStorage::getTasksStoragePath() + "/" + m_taskID );
+    // parse task list
+    QList< CTaskTestProcesser::CTaskSettings > testList = CTaskTestProcesser::Parse( CSettingsStorage::getTasksStoragePath() + "/" + m_taskID , timeLimit );
     if( testList.size() == 0 )
     {
         ui->errors->append( CConstants::s_NO_TESTS_FOUND );
         return;
     }
+
+    // compile and resolve
+    CCompiler::COMPILATION compilationState = CCompiler::Compile(m_fileName, CSettingsStorage::getTasksStoragePath() + "/" + m_taskID ,  {CCompiler::COMP_PARAMS::PEDANTIC, CCompiler::COMP_PARAMS::WALL} , timeLimit );
+    compilationCheck( compilationState );
+    if( compilationState == CCompiler::COMPILATION::FAILED ) return;
 
     int passedTests = processTests( testList );
 
