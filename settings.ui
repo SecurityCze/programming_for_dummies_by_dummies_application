@@ -35,21 +35,21 @@ QPushButton:hover {
 }
 
 /* OKbutton button style */
-QPushButton[objectName=&quot;OKbutton&quot;], QPushButton[objectName=&quot;applyAllButton&quot;], QPushButton[objectName=&quot;taskStorageApplyButton&quot;] {
+QPushButton[objectName=&quot;OKbutton&quot;], QPushButton[objectName=&quot;applyAllButton&quot;], QPushButton[objectName=&quot;taskStorageApplyButton&quot;], QPushButton[objectName=&quot;fontApplyButton&quot;] {
 	background-color: #85B404;
 }
 
-QPushButton[objectName=&quot;OKbutton&quot;]:hover, QPushButton[objectName=&quot;applyAllButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:hover {
+QPushButton[objectName=&quot;OKbutton&quot;]:hover, QPushButton[objectName=&quot;applyAllButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:hover, QPushButton[objectName=&quot;fontApplyButton&quot;]:hover {
 	background-color: #A2DC04;
 }
 
 /* refresh button style */
-QPushButton[objectName=&quot;refreshButton&quot;], QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;],
+QPushButton[objectName=&quot;refreshButton&quot;], QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;], QPushButton[objectName=&quot;fontChooseDialogButton&quot;],
 QPushButton[objectName=&quot;resetDefaultButton&quot;] {
 	background-color: #197BBD;
 }
 
-QPushButton[objectName=&quot;refreshButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;]:hover,
+QPushButton[objectName=&quot;refreshButton&quot;]:hover, QPushButton[objectName=&quot;taskStorageChooseDialogButton&quot;]:hover, QPushButton[objectName=&quot;fontChooseDialogButton&quot;]:hover,
 QPushButton[objectName=&quot;resetDefaultButton&quot;]:hover {
 	background-color: #6A7FDB;
 }
@@ -63,32 +63,63 @@ QPushButton[objectName=&quot;returnButton&quot;]:hover {
 	background-color: #FF0022;
 }
 
-QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:disabled {
+QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectName=&quot;taskStorageApplyButton&quot;]:disabled, QPushButton[objectName=&quot;fontApplyButton&quot;]:disabled {
     background-color: #87898D;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="taskStorageLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="taskStorageSettingsNameLabel">
-       <property name="text">
-        <string>Task storage</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="taskStorageChosenLocation"/>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="taskStorageChooseDialogButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Lets you choose a storage location for tasks</string>
+       </property>
        <property name="text">
         <string>Choose location</string>
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="taskStorageChosenLocation">
+       <property name="toolTip">
+        <string>Chosen task storage</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="taskStorageSettingsNameLabel">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Where are task description stored</string>
+       </property>
+       <property name="text">
+        <string>Task storage</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0" colspan="2">
       <widget class="QCheckBox" name="taskStorageDeleteCurrentBox">
+       <property name="toolTip">
+        <string>Do you want to delete everything iniside old location when changing?</string>
+       </property>
        <property name="text">
         <string>Delete old storage location</string>
        </property>
@@ -99,6 +130,98 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="taskStorageApplyButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Apply storage location change</string>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="fontLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="fontChosenLabel">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>What font to use</string>
+       </property>
+       <property name="text">
+        <string>Font</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="fontChooseDialogButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Lets you choose a font</string>
+       </property>
+       <property name="text">
+        <string>Choose font</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="fontChosenLine">
+       <property name="toolTip">
+        <string>Chosen font</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="fontApplyButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Apply a font change</string>
+       </property>
        <property name="text">
         <string>Apply</string>
        </property>
@@ -110,6 +233,9 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -123,6 +249,9 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
     <layout class="QHBoxLayout" name="ApplyReturnLayout">
      <item>
       <widget class="QPushButton" name="returnButton">
+       <property name="toolTip">
+        <string>Returns to main menu</string>
+       </property>
        <property name="text">
         <string>Return</string>
        </property>
@@ -130,6 +259,9 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
      </item>
      <item>
       <widget class="QPushButton" name="resetDefaultButton">
+       <property name="toolTip">
+        <string>Resets settings to default</string>
+       </property>
        <property name="text">
         <string>Reset to defaults</string>
        </property>
@@ -137,6 +269,9 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
      </item>
      <item>
       <widget class="QPushButton" name="applyAllButton">
+       <property name="toolTip">
+        <string>Applies all changes</string>
+       </property>
        <property name="text">
         <string>Apply all</string>
        </property>

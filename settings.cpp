@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QDebug>
+#include <QFontDialog>
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -18,7 +19,10 @@ Settings::Settings(QWidget *parent) :
     ui->taskStorageChosenLocation->setText(CSettingsStorage::getTasksStoragePath());
     ui->taskStorageApplyButton->setEnabled(false);
 
-    ui->applyAllButton->setEnabled(false);
+    ui->fontChosenLine->setText(CSettingsStorage::getFont().toString());
+    ui->fontApplyButton->setEnabled(false);
+
+    //ui->applyAllButton->setEnabled(false);
 }
 
 Settings::~Settings()
@@ -35,7 +39,7 @@ void Settings::on_taskStorageChooseDialogButton_clicked()
 
     ui->taskStorageChosenLocation->setText(newStorageDirectory);
     ui->taskStorageApplyButton->setEnabled(true);
-    ui->applyAllButton->setEnabled(true);
+    //ui->applyAllButton->setEnabled(true);
 }
 
 bool Settings::applyStorageChange()
@@ -83,6 +87,9 @@ void Settings::on_applyAllButton_clicked()
     if (ui->taskStorageApplyButton->isEnabled())
         if (!applyStorageChange())
             return;
+    if (ui->fontApplyButton->isEnabled())
+        if (!applyFontChange())
+            return;
 
     QApplication::exit(MainMenu::RESTART_SIGNAL);
 }
@@ -99,5 +106,36 @@ void Settings::on_resetDefaultButton_clicked()
 
     CSettingsStorage::resetToDefaults();
 
+    QApplication::exit(MainMenu::RESTART_SIGNAL);
+}
+
+bool Settings::applyFontChange()
+{
+    QFont newFont;
+    newFont.fromString(ui->fontChosenLine->text());
+    CSettingsStorage::setFont(newFont);
+    QApplication::setFont(newFont);
+    return true;
+}
+
+void Settings::on_fontChooseDialogButton_clicked()
+{
+    bool valid = false;
+    QFont newFont = QFontDialog::getFont(&valid, font(), this, tr("Choose a font"));
+
+    if (!valid)
+        return;
+
+    ui->fontChosenLine->setText(newFont.key());
+    ui->fontApplyButton->setEnabled(true);
+    //ui->applyAllButton->setEnabled(true);
+}
+
+void Settings::on_fontApplyButton_clicked()
+{
+    if (!resetApplication())
+        return;
+    if (!applyFontChange())
+        return;
     QApplication::exit(MainMenu::RESTART_SIGNAL);
 }

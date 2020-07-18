@@ -26,10 +26,16 @@ private slots:
 
     void on_resetDefaultButton_clicked();
 
+    void on_fontChooseDialogButton_clicked();
+
+    void on_fontApplyButton_clicked();
+
 private:
     bool resetApplication();
 
     bool applyStorageChange();
+
+    bool applyFontChange();
 
     Ui::Settings *ui;
 

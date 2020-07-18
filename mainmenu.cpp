@@ -13,8 +13,9 @@ MainMenu::MainMenu(QWidget *parent)
     , ui(new Ui::MainMenu)
 {
     CSettingsStorage::initStorage();
+    qDebug() << "Setting font: " << CSettingsStorage::getFont();
+    QApplication::setFont(CSettingsStorage::getFont());
     m_taskChooser = new TaskChooser;
-
     ui->setupUi(this);
 }
 

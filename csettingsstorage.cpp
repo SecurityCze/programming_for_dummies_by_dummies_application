@@ -5,6 +5,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
+#include <QFont>
 
 QString CSettingsStorage::getTasksStoragePath()
 {
@@ -16,6 +17,20 @@ void CSettingsStorage::setTasksStoragePath(const QString &newPath)
 {
     QSettings settings;
     settings.setValue(s_TASK_PATH_KEY, newPath);
+}
+
+QFont CSettingsStorage::getFont()
+{
+    QSettings settings;
+    QFont font;
+    font.fromString(settings.value(s_FONT_KEY).toString());
+    return font;
+}
+
+void CSettingsStorage::setFont(const QFont &newFont)
+{
+    QSettings settings;
+    settings.setValue(s_FONT_KEY, newFont.key());
 }
 
 void CSettingsStorage::initStorage()
@@ -35,5 +50,8 @@ void CSettingsStorage::setDefaults(bool force) {
         QDir dir(s_TASK_PATH_DEFAULT);
         dir.makeAbsolute();
         settings.setValue(s_TASK_PATH_KEY, dir.path());
+    }
+    if (force | !settings.contains(s_FONT_KEY)) {
+        settings.setValue(s_FONT_KEY, s_FONT_DEFAULT);
     }
 }
