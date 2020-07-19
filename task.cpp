@@ -214,3 +214,11 @@ void Task::on_runtimeExamplesBox_stateChanged(int arg1)
     else
         ui->runtimeExamplesEdit->hide();
 }
+
+void Task::on_taskCheckBox_stateChanged(int arg1)
+{
+    if (arg1 == Qt::Checked)
+        ui->taskText->show();
+    else
+        ui->taskText->hide();
+}

@@ -281,6 +281,18 @@ QPushButton[objectName=&quot;applyAllButton&quot;]:disabled, QPushButton[objectN
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>taskStorageChooseDialogButton</tabstop>
+  <tabstop>taskStorageDeleteCurrentBox</tabstop>
+  <tabstop>taskStorageApplyButton</tabstop>
+  <tabstop>fontChooseDialogButton</tabstop>
+  <tabstop>fontApplyButton</tabstop>
+  <tabstop>applyAllButton</tabstop>
+  <tabstop>resetDefaultButton</tabstop>
+  <tabstop>returnButton</tabstop>
+  <tabstop>taskStorageChosenLocation</tabstop>
+  <tabstop>fontChosenLine</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

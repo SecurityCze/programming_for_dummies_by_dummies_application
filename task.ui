@@ -174,6 +174,9 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
    </item>
    <item row="5" column="0" colspan="2">
     <layout class="QGridLayout" name="uploadLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
      <item row="2" column="2">
       <widget class="QPushButton" name="markButton">
        <property name="enabled">
@@ -260,6 +263,25 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="taskCheckBox">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Shows a task overview</string>
+       </property>
+       <property name="text">
+        <string>Task overview</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QTextEdit" name="taskText">
        <property name="toolTip">
         <string>Writen task</string>
@@ -342,6 +364,19 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>taskCheckBox</tabstop>
+  <tabstop>runtimeExamplesBox</tabstop>
+  <tabstop>documentationBox</tabstop>
+  <tabstop>fileButton</tabstop>
+  <tabstop>markButton</tabstop>
+  <tabstop>returnButton</tabstop>
+  <tabstop>taskText</tabstop>
+  <tabstop>runtimeExamplesEdit</tabstop>
+  <tabstop>documentationEdit</tabstop>
+  <tabstop>errors</tabstop>
+  <tabstop>fileName</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

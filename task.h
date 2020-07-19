@@ -52,6 +52,8 @@ private slots:
 
     void on_runtimeExamplesBox_stateChanged(int arg1);
 
+    void on_taskCheckBox_stateChanged(int arg1);
+
 private:
     Ui::Task *ui;
     static constexpr const int s_OK = 0;
