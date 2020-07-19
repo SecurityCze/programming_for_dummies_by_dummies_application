@@ -24,20 +24,33 @@ CCompiler::COMP_STATES CCompiler::IsAvailable()
 
     RunDefaultCompilerDP();
 
+    uint32_t timeCheck = 10000;
+
     QFile tmpFile( s_COMPILER_CHECK_FILE );
+
+    while( timeCheck )
+    {
+        if( tmpFile.exists() ) break;
+        QThread::msleep( 500 );
+        timeCheck -= 500;
+    }
+
     if( ! tmpFile.open( QIODevice::ReadOnly | QIODevice::Text ) )
         return COMP_STATES::COMP_ERROR;
 
+    QThread::msleep( 1000 );
+
     QString tmpString = tmpFile.readLine();
     tmpString.remove( tmpString.length() - 1 , 1 ); // parses QString and deletes \n read by readLine
-    qDebug() << "|" << tmpString << "|\n";
-    if( tmpString == s_COMPILER_CHECK_QUOTE )
-    {
-        CloseAndDelete( tmpFile );
-        return COMP_STATES::COMP_AVAILABLE;
-    }
+
+    qDebug() << "console-check|" << tmpString << "|";
+
+    COMP_STATES retVal = COMP_STATES::COMP_MISSING;
+    if( tmpString == s_COMPILER_CHECK_QUOTE ) retVal = COMP_STATES::COMP_AVAILABLE;
+    else                                      retVal = COMP_STATES::COMP_MISSING;
+
     CloseAndDelete( tmpFile );
-    return COMP_STATES::COMP_MISSING;
+    return retVal;
 }
 
 bool CCompiler::SupportedPlatform()
