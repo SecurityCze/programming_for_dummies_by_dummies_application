@@ -28,6 +28,9 @@ public:
     explicit Task(const QString &taskID, const CTaskStorage& taskStorage, QWidget *parent = nullptr);
     ~Task();
 
+private:
+    enum COLOR_SHEET : int { BLACK = 0 , RED , GREEN , ORANGE };
+
 private slots:
     void on_returnButton_clicked();
 
@@ -42,6 +45,8 @@ private slots:
     void compilationCheck( CCompiler::COMPILATION compilationState );
 
     int  processTests( const QList< CTaskTestProcesser::CTaskSettings > & testList );
+
+    QString makeColored( COLOR_SHEET color , const QString & line );
 
     void on_documentationBox_stateChanged(int arg1);
 

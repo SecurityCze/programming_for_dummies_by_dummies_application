@@ -84,7 +84,9 @@ void Task::on_markButton_clicked()
     int mark = ( static_cast< float >( passedTests ) / ( testList.size() * 2 ) ) * 100;
     if( penalisation ) mark *= 1.0f - ( static_cast< float >( s_COMPILATION_ERR_PENALTY_PERCENT ) / 100 );
 
-    ui->errors->append("Final score: " + QString::number( mark ) );
+    if( mark <= 0 )       ui->errors->append( makeColored( COLOR_SHEET::RED , "<b>Final score: " + QString::number( mark ) + "%</b>" ) );
+    else if( mark < 100 ) ui->errors->append( makeColored( COLOR_SHEET::ORANGE , "<b>Final score: " + QString::number( mark ) + "%</b>" ) );
+    else                  ui->errors->append( makeColored( COLOR_SHEET::GREEN , "<b>Final score: " + QString::number( mark ) + "%</b>" ) );
     showMark( mark );
 }
 
@@ -104,7 +106,7 @@ void Task::compilatorCheck( CCompiler::COMP_STATES compilatorState )
 {
     qDebug() << "Compiler present? (0-OK): " << compilatorState;
     if( compilatorState != CCompiler::COMP_STATES::COMP_AVAILABLE )
-        ui->errors->setText( CConstants::s_ERROR_COMPILER_ERR );
+        ui->errors->setText( makeColored( COLOR_SHEET::RED , CConstants::s_ERROR_COMPILER_ERR ) );
 }
 
 void Task::compilationCheck( CCompiler::COMPILATION compilationState )
@@ -112,16 +114,17 @@ void Task::compilationCheck( CCompiler::COMPILATION compilationState )
     qDebug() << "Compilation status: (20-OK, 21-Warnings, 22-FAIL)" << compilationState;
     if( compilationState == CCompiler::COMPILATION::FAILED )
     {
-        ui->errors->setText( CConstants::s_ERROR_COMP_FAILED );
+        ui->errors->setText( makeColored( COLOR_SHEET::RED , CConstants::s_ERROR_COMP_FAILED ) );
         showMark( 0 );
     }
     else if( compilationState == CCompiler::COMPILATION::WITH_WARNINGS )
     {
-        ui->errors->setText( QString( CConstants::s_ERROR_COMP_WARNS ) + QString::number( s_COMPILATION_ERR_PENALTY_PERCENT ) + QString( "%" ) );
+        ui->errors->setText( makeColored( COLOR_SHEET::ORANGE , QString( CConstants::s_ERROR_COMP_WARNS ) + QString::number( s_COMPILATION_ERR_PENALTY_PERCENT ) + QString( "%" ) ) );
         penalisation = true;
     }
     else if( compilationState == CCompiler::COMPILATION::SUCCESSFUL )
-        ui->errors->setText( CConstants::s_COMPILATION_SUCCES );
+        ui->errors->setText( makeColored( COLOR_SHEET::GREEN , CConstants::s_COMPILATION_SUCCES ) );
+    ui->errors->append( "" );
 }
 
 int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testList )
@@ -133,7 +136,7 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
     for( const auto & test : testList )
     {
         ui->progressBarSolution->setValue( ( static_cast<float>(nthTest) / testList.size() ) * 100 );
-        ui->errors->append("Test #" + QString::number( nthTest ) );
+        ui->errors->append("<b>Test #" + QString::number( nthTest ) + "</b>" );
         repaint();
 
         if( test.m_timeLimit )
@@ -152,32 +155,31 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
 
         if( taskState.GetTaskState() == CTaskState::TASK_STATE::FAILED )
         {
-            ui->errors->append("Test #" + QString::number( nthTest ) + " failed.");
-            ui->errors->append("Mark: 0%");
+            ui->errors->append( makeColored( COLOR_SHEET::RED , "Test #" + QString::number( nthTest ) + " failed." ) );
+            ui->errors->append( makeColored( COLOR_SHEET::RED , "Mark: 0%" ) );
             if( taskState.GetTaskMessage().size() )
             {
-                ui->errors->append("Error message: ");
-                ui->errors->append( taskState.GetTaskMessage() );
+                ui->errors->append( makeColored( COLOR_SHEET::RED , "Error message: " ) );
+                ui->errors->append( makeColored( COLOR_SHEET::RED , taskState.GetTaskMessage() ) );
             }
             ui->errors->append("");
         }
         else if( taskState.GetTaskState() == CTaskState::TASK_STATE::PART_FAIL )
         {
-            ui->errors->append("Test #" + QString::number( nthTest ) + " passed with some errors.");
-            ui->errors->append("Mark: 50%");
+            ui->errors->append( makeColored( COLOR_SHEET::ORANGE , "Test #" + QString::number( nthTest ) + " passed with some errors." ) );
+            ui->errors->append( makeColored( COLOR_SHEET::ORANGE ,  "Mark: 50%" ) );
             if( taskState.GetTaskMessage().size() )
             {
-                ui->errors->append("Error message: ");
-                ui->errors->append( taskState.GetTaskMessage() );
+                ui->errors->append( makeColored( COLOR_SHEET::ORANGE , "Error message: " ) );
+                ui->errors->append( makeColored( COLOR_SHEET::ORANGE , taskState.GetTaskMessage() ) );
             }
-            ui->errors->append( taskState.GetTaskMessage() );
             ui->errors->append("");
             passed += 1;
         }
         else if( taskState.GetTaskState() == CTaskState::TASK_STATE::SUCCESSFUL )
         {
-            ui->errors->append("Test #" + QString::number( nthTest ) + " passed");
-            ui->errors->append("Mark: 100%");
+            ui->errors->append( makeColored( COLOR_SHEET::GREEN , "Test #" + QString::number( nthTest ) + " passed" ) );
+            ui->errors->append( makeColored( COLOR_SHEET::GREEN , "Mark: 100%" ) );
             ui->errors->append("");
             passed += 2;
         }
@@ -185,6 +187,16 @@ int Task::processTests( const QList< CTaskTestProcesser::CTaskSettings > & testL
         delete task;
     }
     return passed;
+}
+
+QString Task::makeColored( COLOR_SHEET color , const QString & line )
+{
+    QString span = "<span style=\"color: ";
+    if( color == COLOR_SHEET::BLACK )       span += "black;\">";
+    else if( color == COLOR_SHEET::RED  )   span += "red;\">";
+    else if( color == COLOR_SHEET::GREEN )  span += "green;\">";
+    else if( color == COLOR_SHEET::ORANGE ) span += "orange;\">";
+    return ( span + line + "</span>" );
 }
 
 void Task::on_documentationBox_stateChanged(int arg1)
