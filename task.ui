@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>620</height>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="14" column="0">
+   <item row="13" column="0">
     <widget class="QGroupBox" name="groupboxMarks">
      <layout class="QGridLayout" name="markLayout">
       <property name="leftMargin">
@@ -105,7 +105,7 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
       <item row="2" column="0">
        <widget class="QTextEdit" name="errors">
         <property name="toolTip">
-         <string notr="true"/>
+         <string notr="true">Errors when marking</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -172,96 +172,8 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
      </layout>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
-    <layout class="QGridLayout" name="uploadLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
-     </property>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="markButton">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Marks chosen solution</string>
-       </property>
-       <property name="text">
-        <string>Mark</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <spacer name="spacerReturnMark">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="returnButton">
-       <property name="text">
-        <string>Return</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="fileButton">
-       <property name="text">
-        <string>Choose file</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" rowspan="2" colspan="2">
-      <widget class="QLineEdit" name="fileName">
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>Chosen file for validationg</string>
-       </property>
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <layout class="QVBoxLayout" name="documentationLayout">
-     <item>
-      <widget class="QCheckBox" name="documentationBox">
-       <property name="text">
-        <string>Recommended documentation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="documentationEdit">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0" colspan="2">
     <layout class="QVBoxLayout" name="taskLayout">
-     <item alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="taskName">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QCheckBox" name="taskCheckBox">
        <property name="font">
@@ -291,10 +203,56 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="runtimeExamplesBox">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Shows runtime examples</string>
+       </property>
+       <property name="text">
+        <string>Runtime examples</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="runtimeExamplesEdit">
+       <property name="toolTip">
+        <string>Runtime examples for current task</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="documentationBox">
+       <property name="toolTip">
+        <string>Shows recomended documentation</string>
+       </property>
+       <property name="text">
+        <string>Recommended documentation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="documentationEdit">
+       <property name="toolTip">
+        <string>Recomended documentation for current task</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="8" column="0" colspan="2">
-    <widget class="Line" name="lineUploadScore">
+   <item row="2" column="0">
+    <widget class="Line" name="lineTaskUpload">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -306,7 +264,81 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
      </property>
     </widget>
    </item>
-   <item row="13" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
+    <widget class="QFrame" name="uploadFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QGridLayout" name="uploadLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="markButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Marks chosen solution</string>
+        </property>
+        <property name="text">
+         <string>Mark</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <spacer name="spacerReturnMark">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="returnButton">
+        <property name="text">
+         <string>Return</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="fileButton">
+        <property name="toolTip">
+         <string>Lets you choose a file for makring</string>
+        </property>
+        <property name="text">
+         <string>Choose file</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="2" colspan="2">
+       <widget class="QLineEdit" name="fileName">
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Chosen file for validationg</string>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBarSolution">
      <property name="enabled">
       <bool>true</bool>
@@ -322,8 +354,8 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="Line" name="lineTaskUpload">
+   <item row="6" column="0" colspan="2">
+    <widget class="Line" name="lineUploadScore">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -335,45 +367,43 @@ QGroupBox[objectName=&quot;groupboxMarks&quot;] {
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <layout class="QVBoxLayout" name="runtimeExamplesLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="taskName">
+     <property name="toolTip">
+      <string>Name of current task</string>
      </property>
-     <item>
-      <widget class="QCheckBox" name="runtimeExamplesBox">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Runtime examples</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="runtimeExamplesEdit">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QCheckBox" name="markCheckBox">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Shows mark and errors</string>
+     </property>
+     <property name="text">
+      <string>Mark</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>taskCheckBox</tabstop>
-  <tabstop>runtimeExamplesBox</tabstop>
-  <tabstop>documentationBox</tabstop>
   <tabstop>fileButton</tabstop>
   <tabstop>markButton</tabstop>
   <tabstop>returnButton</tabstop>
   <tabstop>taskText</tabstop>
-  <tabstop>runtimeExamplesEdit</tabstop>
-  <tabstop>documentationEdit</tabstop>
   <tabstop>errors</tabstop>
   <tabstop>fileName</tabstop>
  </tabstops>

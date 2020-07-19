@@ -57,6 +57,7 @@ void Task::on_markButton_clicked()
     qDebug() << "Marking task: " << m_taskID << " from file: " << m_fileName;
     ui->progressBarSolution->show();
     ui->groupboxMarks->show();
+    ui->markCheckBox->setChecked(true);
     repaint();
 
     // check for compiler
@@ -221,4 +222,12 @@ void Task::on_taskCheckBox_stateChanged(int arg1)
         ui->taskText->show();
     else
         ui->taskText->hide();
+}
+
+void Task::on_markCheckBox_stateChanged(int arg1)
+{
+    if (arg1 == Qt::Checked)
+        ui->groupboxMarks->show();
+    else
+        ui->groupboxMarks->hide();
 }
